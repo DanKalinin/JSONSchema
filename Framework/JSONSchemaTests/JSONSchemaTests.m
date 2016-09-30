@@ -250,7 +250,34 @@
     XCTAssertNotNil(schema, @"9.0");
     
     valid = [schema validateString:@"{ \"S_25\": \"This is a string\" }" error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"9.1");
+    
+    valid = [schema validateString:@"{ \"I_0\": 42 }" error:nil];
+    XCTAssertTrue(valid, @"9.2");
+    
+    valid = [schema validateString:@"{ \"S_0\": 42 }" error:nil];
+    XCTAssertFalse(valid, @"9.3");
+    
+    valid = [schema validateString:@"{ \"I_42\": \"This is a string\" }" error:nil];
+    XCTAssertFalse(valid, @"9.4");
+    
+    valid = [schema validateString:@"{ \"keyword\": \"value\" }" error:nil];
+    XCTAssertFalse(valid, @"9.5");
+    
+    // Object - patternProperties2
+    
+    URL = [self URLForSchema:@"Object-patternProperties2"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"10.0");
+    
+    valid = [schema validateString:@"{ \"builtin\": 42 }" error:nil];
+    XCTAssertTrue(valid, @"10.1");
+    
+    valid = [schema validateString:@"{ \"keyword\": \"value\" }" error:nil];
+    XCTAssertTrue(valid, @"10.2");
+    
+    valid = [schema validateString:@"{ \"keyword\": 42 }" error:nil];
+    XCTAssertFalse(valid, @"10.3");
 }
 
 - (void)testPerformanceExample {

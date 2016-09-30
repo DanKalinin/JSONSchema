@@ -565,18 +565,12 @@ static NSString *const JSONID = @"id";
             return NO;
         }
         
-        NSUInteger matches = 0;
         for (NSString *property in object.allKeys) {
-            matches += [regexp numberOfMatchesInString:property options:0 range:NSMakeRange(0, property.length)];
+            NSUInteger matches = [regexp numberOfMatchesInString:property options:0 range:NSMakeRange(0, property.length)];
             if (matches > 0) {
                 properties[property] = self.patternProperties[patternProperty];
                 break;
             };
-        }
-        
-        if (matches == 0) {
-            self.error = JSONPatternProperties;
-            return NO;
         }
     }
     
