@@ -925,12 +925,15 @@ static NSString *const JSONID = @"id";
         BOOL valid = [schema validateObject:self.object error:nil];
         matches += valid;
         if (matches > 1) {
+            self.error = JSONOneOf;
             return NO;
         }
     }
     
-    BOOL valid = (matches == 1);
-    return valid;
+    if (matches == 1) return YES;
+    
+    self.error = JSONOneOf;
+    return NO;
 }
 
 @end
@@ -959,7 +962,12 @@ static NSString *const JSONID = @"id";
 - (BOOL)validate {
     JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:self.subschema];
     BOOL valid = [schema validateObject:self.object error:nil];
-    return !valid;
+    if (valid) {
+        self.error = JSONNot;
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end
