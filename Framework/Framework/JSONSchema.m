@@ -354,90 +354,6 @@ static NSString *const JSONID = @"id";
 
 
 
-// Boolean
-
-@interface JSONBooleanValidator : JSONValidator
-
-@end
-
-
-
-@implementation JSONBooleanValidator
-
-- (BOOL)validate {
-    
-    // type
-    
-    if (![self.object isKindOfClass:[NSNumber class]]) {
-        self.error = JSONType;
-        return NO;
-    }
-    
-    // value
-    
-    NSArray *values = @[@0, @1];
-    if (![values containsObject:self.object]) {
-        self.error = JSONType;
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (void)setError:(NSString *)error {
-    error = [NSString stringWithFormat:@"%@.%@", JSONBoolean, error];
-    [super setError:error];
-}
-
-@end
-
-
-
-
-
-
-
-
-
-
-// Null
-
-@interface JSONNullValidator : JSONValidator
-
-@end
-
-
-
-@implementation JSONNullValidator
-
-- (BOOL)validate {
-    
-    // type
-    
-    if (self.object != nil && ![self.object isKindOfClass:[NSNull class]]) {
-        self.error = JSONType;
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (void)setError:(NSString *)error {
-    error = [NSString stringWithFormat:@"%@.%@", JSONNull, error];
-    [super setError:error];
-}
-
-@end
-
-
-
-
-
-
-
-
-
-
 // Object
 
 @interface JSONObjectValidator : JSONValidator
@@ -662,10 +578,12 @@ static NSString *const JSONID = @"id";
     // uniqueItems
     
     if (self.uniqueItems) {
-        NSSet *set = [NSSet setWithArray:array];
-        if (set.count < array.count) {
-            self.error = JSONUniqueItems;
-            return NO;
+        if (self.uniqueItems.boolValue) {
+            NSSet *set = [NSSet setWithArray:array];
+            if (set.count < array.count) {
+                self.error = JSONUniqueItems;
+                return NO;
+            }
         }
     }
     
@@ -704,9 +622,11 @@ static NSString *const JSONID = @"id";
             // additionalItems
             
             if (self.additionalItems) {
-                if (array.count > items.count) {
-                    self.error = JSONAdditionalItems;
-                    return NO;
+                if (!self.additionalItems.boolValue) {
+                    if (array.count > items.count) {
+                        self.error = JSONAdditionalItems;
+                        return NO;
+                    }
                 }
             }
             
@@ -723,6 +643,90 @@ static NSString *const JSONID = @"id";
 
 - (void)setError:(NSString *)error {
     error = [NSString stringWithFormat:@"%@.%@", JSONArray, error];
+    [super setError:error];
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
+// Boolean
+
+@interface JSONBooleanValidator : JSONValidator
+
+@end
+
+
+
+@implementation JSONBooleanValidator
+
+- (BOOL)validate {
+    
+    // type
+    
+    if (![self.object isKindOfClass:[NSNumber class]]) {
+        self.error = JSONType;
+        return NO;
+    }
+    
+    // value
+    
+    NSArray *values = @[@0, @1];
+    if (![values containsObject:self.object]) {
+        self.error = JSONType;
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)setError:(NSString *)error {
+    error = [NSString stringWithFormat:@"%@.%@", JSONBoolean, error];
+    [super setError:error];
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
+// Null
+
+@interface JSONNullValidator : JSONValidator
+
+@end
+
+
+
+@implementation JSONNullValidator
+
+- (BOOL)validate {
+    
+    // type
+    
+    if (self.object != nil && ![self.object isKindOfClass:[NSNull class]]) {
+        self.error = JSONType;
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)setError:(NSString *)error {
+    error = [NSString stringWithFormat:@"%@.%@", JSONNull, error];
     [super setError:error];
 }
 
@@ -821,7 +825,7 @@ static NSString *const JSONID = @"id";
 }
 
 - (BOOL)validateData:(NSData *)data error:(NSError **)error {
-    id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
+    id object = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:error];
     BOOL valid = [self validateObject:object error:error];
     return valid;
 }
@@ -867,6 +871,12 @@ static NSString *const JSONID = @"id";
             arrayValidator.maxItems = self.schema[JSONMaxItems];
             arrayValidator.uniqueItems = self.schema[JSONUniqueItems];
             validator = arrayValidator;
+        } else if ([type isEqualToString:JSONBoolean]) {
+            JSONBooleanValidator *booleanValidator = [JSONBooleanValidator new];
+            validator = booleanValidator;
+        } else if ([type isEqualToString:JSONNull]) {
+            JSONNullValidator *nullValidator = [JSONNullValidator new];
+            validator = nullValidator;
         }
     }
     

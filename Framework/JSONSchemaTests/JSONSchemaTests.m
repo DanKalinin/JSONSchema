@@ -332,6 +332,78 @@
     
     valid = [schema validateString:@"[1600, \"Pennsylvania\", \"Avenue\", \"NW\", \"Washington\"]" error:nil];
     XCTAssertFalse(valid, @"3.3");
+    
+    // Array - length
+    
+    URL = [self URLForSchema:@"Array-length"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"4.0");
+    
+    valid = [schema validateString:@"[ ]" error:nil];
+    XCTAssertFalse(valid, @"4.1");
+    
+    valid = [schema validateString:@"[1]" error:nil];
+    XCTAssertFalse(valid, @"4.2");
+    
+    valid = [schema validateString:@"[1, 2]" error:nil];
+    XCTAssertTrue(valid, @"4.3");
+    
+    valid = [schema validateString:@"[1, 2, 3]" error:nil];
+    XCTAssertTrue(valid, @"4.4");
+    
+    valid = [schema validateString:@"[1, 2, 3, 4]" error:nil];
+    XCTAssertFalse(valid, @"4.5");
+    
+    // Array - uniqueness
+    
+    URL = [self URLForSchema:@"Array-uniqueness"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"5.0");
+    
+    valid = [schema validateString:@"[1, 2, 3, 4, 5]" error:nil];
+    XCTAssertTrue(valid, @"5.1");
+    
+    valid = [schema validateString:@"[1, 2, 3, 3, 4]" error:nil];
+    XCTAssertFalse(valid, @"5.2");
+    
+    valid = [schema validateString:@"[ ]" error:nil];
+    XCTAssertTrue(valid, @"5.3");
+    
+    valid = [schema validateString:@"[ {\"a\" : 1}, {\"a\" : 1} ]" error:nil];
+    XCTAssertFalse(valid);
+}
+
+- (void)testBoolean {
+    
+    JSONSchema *schema = [[JSONSchema alloc] initWithString:@"{\"type\" : \"boolean\"}"];
+    XCTAssertNotNil(schema, @"1.0");
+    
+    BOOL valid = [schema validateString:@"true" error:nil];
+    XCTAssertTrue(valid, @"1.1");
+    
+    valid = [schema validateString:@"false" error:nil];
+    XCTAssertTrue(valid, @"1.2");
+    
+    valid = [schema validateString:@"\"true\"" error:nil];
+    XCTAssertFalse(valid, @"1.3");
+}
+
+- (void)testNull {
+    
+    JSONSchema *schema = [[JSONSchema alloc] initWithString:@"{ \"type\": \"null\" }"];
+    XCTAssertNotNil(schema, @"1.0");
+    
+    BOOL valid = [schema validateString:@"null" error:nil];
+    XCTAssertTrue(valid, @"1.1");
+    
+    valid = [schema validateString:@"false" error:nil];
+    XCTAssertFalse(valid, @"1.2");
+    
+    valid = [schema validateString:@"0" error:nil];
+    XCTAssertFalse(valid, @"1.3");
+    
+    valid = [schema validateString:@"{\"a\" : \"b\"}" error:nil];
+    XCTAssertFalse(valid, @"1.4");
 }
 
 - (void)testPerformanceExample {
