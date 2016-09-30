@@ -34,6 +34,13 @@
 			remoteGlobalIDString = 37EEF8951D9AD15800AC52B6;
 			remoteInfo = JSONSchema;
 		};
+		37EEF9371D9EF36300AC52B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37EEF8C81D9C8C0100AC52B6 /* Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 37EEF8E71D9D4C9C00AC52B6;
+			remoteInfo = JSONSchemaTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -124,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				37EEF8CD1D9C8C0100AC52B6 /* JSONSchema.framework */,
+				37EEF9381D9EF36300AC52B6 /* JSONSchemaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,6 +212,13 @@
 			fileType = wrapper.framework;
 			path = JSONSchema.framework;
 			remoteRef = 37EEF8CC1D9C8C0100AC52B6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37EEF9381D9EF36300AC52B6 /* JSONSchemaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = JSONSchemaTests.xctest;
+			remoteRef = 37EEF9371D9EF36300AC52B6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

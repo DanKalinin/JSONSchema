@@ -31,6 +31,12 @@
 		37EEF91F1D9E83B200AC52B6 /* Array-tuple2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF91E1D9E83B200AC52B6 /* Array-tuple2.json */; };
 		37EEF9211D9E85E600AC52B6 /* Array-length.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9201D9E85E600AC52B6 /* Array-length.json */; };
 		37EEF9231D9E8E9F00AC52B6 /* Array-uniqueness.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9221D9E8E9F00AC52B6 /* Array-uniqueness.json */; };
+		37EEF9251D9EDBC700AC52B6 /* Combination-allOf1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9241D9EDBC700AC52B6 /* Combination-allOf1.json */; };
+		37EEF9321D9EF35400AC52B6 /* Helpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF9311D9EF33100AC52B6 /* Helpers.framework */; };
+		37EEF9431D9F09F400AC52B6 /* Combination-allOf2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9421D9F09F400AC52B6 /* Combination-allOf2.json */; };
+		37EEF9451D9F0DCC00AC52B6 /* Combination-anyOf.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */; };
+		37EEF9471D9F1CE200AC52B6 /* Combination-oneOf1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */; };
+		37EEF9491D9F1FE300AC52B6 /* Combination-oneOf2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +46,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 37EEF8951D9AD15800AC52B6;
 			remoteInfo = JSONSchema;
+		};
+		37EEF9301D9EF33100AC52B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37EEF92C1D9EF33100AC52B6 /* Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3743921C1D91EED7005E1075;
+			remoteInfo = Helpers;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -71,6 +84,12 @@
 		37EEF91E1D9E83B200AC52B6 /* Array-tuple2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-tuple2.json"; sourceTree = "<group>"; };
 		37EEF9201D9E85E600AC52B6 /* Array-length.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-length.json"; sourceTree = "<group>"; };
 		37EEF9221D9E8E9F00AC52B6 /* Array-uniqueness.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-uniqueness.json"; sourceTree = "<group>"; };
+		37EEF9241D9EDBC700AC52B6 /* Combination-allOf1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-allOf1.json"; sourceTree = "<group>"; };
+		37EEF92C1D9EF33100AC52B6 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../../../../Helpers/Framework/Framework.xcodeproj; sourceTree = "<group>"; };
+		37EEF9421D9F09F400AC52B6 /* Combination-allOf2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-allOf2.json"; sourceTree = "<group>"; };
+		37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-anyOf.json"; sourceTree = "<group>"; };
+		37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf1.json"; sourceTree = "<group>"; };
+		37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf2.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37EEF9321D9EF35400AC52B6 /* Helpers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +115,7 @@
 		37EEF88C1D9AD15800AC52B6 = {
 			isa = PBXGroup;
 			children = (
+				37EEF92A1D9EF31300AC52B6 /* Frameworks */,
 				37EEF8981D9AD15800AC52B6 /* Framework */,
 				37EEF8E81D9D4C9C00AC52B6 /* JSONSchemaTests */,
 				37EEF8971D9AD15800AC52B6 /* Products */,
@@ -153,8 +174,37 @@
 				37EEF91E1D9E83B200AC52B6 /* Array-tuple2.json */,
 				37EEF9201D9E85E600AC52B6 /* Array-length.json */,
 				37EEF9221D9E8E9F00AC52B6 /* Array-uniqueness.json */,
+				37EEF9241D9EDBC700AC52B6 /* Combination-allOf1.json */,
+				37EEF9421D9F09F400AC52B6 /* Combination-allOf2.json */,
+				37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */,
+				37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */,
+				37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */,
 			);
 			path = Schemas;
+			sourceTree = "<group>";
+		};
+		37EEF92A1D9EF31300AC52B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				37EEF92B1D9EF31300AC52B6 /* Helpers */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		37EEF92B1D9EF31300AC52B6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				37EEF92C1D9EF33100AC52B6 /* Framework.xcodeproj */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		37EEF92D1D9EF33100AC52B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				37EEF9311D9EF33100AC52B6 /* Helpers.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +286,12 @@
 			mainGroup = 37EEF88C1D9AD15800AC52B6;
 			productRefGroup = 37EEF8971D9AD15800AC52B6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 37EEF92D1D9EF33100AC52B6 /* Products */;
+					ProjectRef = 37EEF92C1D9EF33100AC52B6 /* Framework.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				37EEF8951D9AD15800AC52B6 /* JSONSchema */,
@@ -243,6 +299,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		37EEF9311D9EF33100AC52B6 /* Helpers.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Helpers.framework;
+			remoteRef = 37EEF9301D9EF33100AC52B6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		37EEF8941D9AD15800AC52B6 /* Resources */ = {
@@ -258,13 +324,16 @@
 			files = (
 				37EEF8FA1D9D4FCE00AC52B6 /* String-format.json in Resources */,
 				37EEF90E1D9DCABB00AC52B6 /* Object-propertyDependencies2.json in Resources */,
+				37EEF9491D9F1FE300AC52B6 /* Combination-oneOf2.json in Resources */,
 				37EEF90A1D9DB45300AC52B6 /* Object-size.json in Resources */,
 				37EEF9011D9D845800AC52B6 /* Object-properties.json in Resources */,
 				37EEF9171D9E325C00AC52B6 /* Object-patternProperties2.json in Resources */,
+				37EEF9471D9F1CE200AC52B6 /* Combination-oneOf1.json in Resources */,
 				37EEF9231D9E8E9F00AC52B6 /* Array-uniqueness.json in Resources */,
 				37EEF90C1D9DC80500AC52B6 /* Object-propertyDependencies1.json in Resources */,
 				37EEF9211D9E85E600AC52B6 /* Array-length.json in Resources */,
 				37EEF9101D9DD3A200AC52B6 /* Object-schemaDependencies.json in Resources */,
+				37EEF9251D9EDBC700AC52B6 /* Combination-allOf1.json in Resources */,
 				37EEF8F61D9D4F1D00AC52B6 /* String-length.json in Resources */,
 				37EEF9071D9D94DF00AC52B6 /* Object-required.json in Resources */,
 				37EEF8FF1D9D76FD00AC52B6 /* Number-range.json in Resources */,
@@ -272,7 +341,9 @@
 				37EEF91F1D9E83B200AC52B6 /* Array-tuple2.json in Resources */,
 				37EEF8FD1D9D70B400AC52B6 /* Number-multiple.json in Resources */,
 				37EEF8F81D9D4F9C00AC52B6 /* String-regexp.json in Resources */,
+				37EEF9431D9F09F400AC52B6 /* Combination-allOf2.json in Resources */,
 				37EEF9141D9DD72F00AC52B6 /* Object-patternProperties1.json in Resources */,
+				37EEF9451D9F0DCC00AC52B6 /* Combination-anyOf.json in Resources */,
 				37EEF9051D9D927200AC52B6 /* Object-additionalProperties2.json in Resources */,
 				37EEF91B1D9E57D200AC52B6 /* Array-tuple1.json in Resources */,
 				37EEF9191D9E55AA00AC52B6 /* Array-list.json in Resources */,

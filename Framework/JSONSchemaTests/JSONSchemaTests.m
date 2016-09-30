@@ -33,37 +33,37 @@
     
     NSURL *URL = [self URLForSchema:@"String-length"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
-    XCTAssertNotNil(schema);
+    XCTAssertNotNil(schema, @"1.0");
     
     BOOL valid = [schema validateObject:@"A" error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"1.1");
     
     valid = [schema validateObject:@"AB" error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"1.2");
     
     valid = [schema validateObject:@"ABC" error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"1.3");
     
     valid = [schema validateObject:@"ABCD" error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"1.4");
     
     // String - regexp
     
     URL = [self URLForSchema:@"String-regexp"];
     schema = [[JSONSchema alloc] initWithURL:URL];
-    XCTAssertNotNil(schema);
+    XCTAssertNotNil(schema, @"2.0");
     
     valid = [schema validateObject:@"555-1212" error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"2.1");
     
     valid = [schema validateObject:@"(888)555-1212" error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"2.2");
     
     valid = [schema validateObject:@"(888)555-1212 ext. 532" error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"2.3");
     
     valid = [schema validateObject:@"(800)FLOWERS" error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"2.4");
     
     // String - format
     
@@ -76,40 +76,40 @@
     
     NSURL *URL = [self URLForSchema:@"Number-multiple"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
-    XCTAssertNotNil(schema);
+    XCTAssertNotNil(schema, @"1.0");
     
     BOOL valid = [schema validateObject:@0 error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"1.1");
     
     valid = [schema validateObject:@10 error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"1.2");
     
     valid = [schema validateObject:@20 error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"1.3");
     
     valid = [schema validateObject:@23 error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"1.4");
     
     // Number - range
     
     URL = [self URLForSchema:@"Number-range"];
     schema = [[JSONSchema alloc] initWithURL:URL];
-    XCTAssertNotNil(schema);
+    XCTAssertNotNil(schema, @"2.0");
     
     valid = [schema validateObject:@-1 error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"2.1");
     
     valid = [schema validateObject:@0 error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"2.2");
     
     valid = [schema validateObject:@10 error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"2.3");
     
     valid = [schema validateObject:@99 error:nil];
-    XCTAssertTrue(valid);
+    XCTAssertTrue(valid, @"2.4");
     
     valid = [schema validateObject:@100 error:nil];
-    XCTAssertFalse(valid);
+    XCTAssertFalse(valid, @"2.5");
 }
 
 - (void)testObject {
@@ -406,11 +406,99 @@
     XCTAssertFalse(valid, @"1.4");
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testCombination {
+    
+    // Combination - allOf 1
+    
+    NSURL *URL = [self URLForSchema:@"Combination-allOf1"];
+    JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"1.0");
+
+    BOOL valid = [schema validateObject:@"short" error:nil];
+    XCTAssertTrue(valid, @"1.1");
+    
+    valid = [schema validateObject:@"too long" error:nil];
+    XCTAssertFalse(valid, @"1.2");
+    
+    // Combination - allOf 2
+    
+    URL = [self URLForSchema:@"Combination-allOf2"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"2.0");
+    
+    valid = [schema validateObject:@"No way" error:nil];
+    XCTAssertFalse(valid, @"2.1");
+    
+    valid = [schema validateObject:@-1 error:nil];
+    XCTAssertFalse(valid, @"2.2");
+    
+    // Combination - anyOf
+    
+    URL = [self URLForSchema:@"Combination-anyOf"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"3.0");
+    
+    valid = [schema validateObject:@"short" error:nil];
+    XCTAssertTrue(valid, @"3.1");
+    
+    valid = [schema validateObject:@"too long" error:nil];
+    XCTAssertFalse(valid, @"3.2");
+    
+    valid = [schema validateObject:@12 error:nil];
+    XCTAssertTrue(valid, @"3.3");
+    
+    valid = [schema validateObject:@-5 error:nil];
+    XCTAssertFalse(valid, @"3.4");
+    
+    // Combination - oneOf 1
+    
+    URL = [self URLForSchema:@"Combination-oneOf1"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"4.0");
+    
+    valid = [schema validateObject:@10 error:nil];
+    XCTAssertTrue(valid, @"4.1");
+    
+    valid = [schema validateObject:@9 error:nil];
+    XCTAssertTrue(valid, @"4.2");
+    
+    valid = [schema validateObject:@2 error:nil];
+    XCTAssertFalse(valid, @"4.3");
+    
+    valid = [schema validateObject:@15 error:nil];
+    XCTAssertFalse(valid, @"4.4");
+    
+    // Combination - oneOf 2
+    
+    URL = [self URLForSchema:@"Combination-oneOf2"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"5.0");
+    
+    valid = [schema validateObject:@10 error:nil];
+    XCTAssertTrue(valid, @"5.1");
+    
+    valid = [schema validateObject:@9 error:nil];
+    XCTAssertTrue(valid, @"5.2");
+    
+    valid = [schema validateObject:@2 error:nil];
+    XCTAssertFalse(valid, @"5.3");
+    
+    valid = [schema validateObject:@15 error:nil];
+    XCTAssertFalse(valid, @"5.4");
+    
+    // Combination - not
+    
+    schema = [[JSONSchema alloc] initWithString:@"{ \"not\": { \"type\": \"string\" } }"];
+    XCTAssertNotNil(schema, @"6.0");
+    
+    valid = [schema validateObject:@42 error:nil];
+    XCTAssertTrue(valid, @"6.1");
+    
+    valid = [schema validateString:@"{ \"key\": \"value\" }" error:nil];
+    XCTAssertTrue(valid, @"6.2");
+    
+    valid = [schema validateObject:@"I am a string" error:nil];
+    XCTAssertFalse(valid, @"6.3");
 }
 
 #pragma mark - Helpers
