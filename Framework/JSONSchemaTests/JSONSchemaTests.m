@@ -280,6 +280,60 @@
     XCTAssertFalse(valid, @"10.3");
 }
 
+- (void)testArray {
+    
+    // Array - list
+    
+    NSURL *URL = [self URLForSchema:@"Array-list"];
+    JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"1.0");
+    
+    BOOL valid = [schema validateString:@"[1, 2, 3, 4, 5]" error:nil];
+    XCTAssertTrue(valid, @"1.1");
+    
+    valid = [schema validateString:@"[1, 2, \"3\", 4, 5]" error:nil];
+    XCTAssertFalse(valid, @"1.2");
+    
+    valid = [schema validateString:@"[ ]" error:nil];
+    XCTAssertTrue(valid);
+    
+    // Array - tuple 1
+    
+    URL = [self URLForSchema:@"Array-tuple1"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"2.0");
+    
+    valid = [schema validateString:@"[1600, \"Pennsylvania\", \"Avenue\", \"NW\"]" error:nil];
+    XCTAssertTrue(valid, @"2.1");
+    
+    valid = [schema validateString:@"[24, \"Sussex\", \"Drive\"]" error:nil];
+    XCTAssertFalse(valid, @"2.2");
+    
+    valid = [schema validateString:@"[\"Palais de l'Élysée\"]" error:nil];
+    XCTAssertFalse(valid, @"2.3");
+    
+    valid = [schema validateString:@"[10, \"Downing\", \"Street\"]" error:nil];
+    XCTAssertTrue(valid, @"2.4");
+    
+    valid = [schema validateString:@"[1600, \"Pennsylvania\", \"Avenue\", \"NW\", \"Washington\"]" error:nil];
+    XCTAssertTrue(valid);
+    
+    // Array - tuple 2
+    
+    URL = [self URLForSchema:@"Array-tuple2"];
+    schema = [[JSONSchema alloc] initWithURL:URL];
+    XCTAssertNotNil(schema, @"3.0");
+    
+    valid = [schema validateString:@"[1600, \"Pennsylvania\", \"Avenue\", \"NW\"]" error:nil];
+    XCTAssertTrue(valid, @"3.1");
+    
+    valid = [schema validateString:@"[1600, \"Pennsylvania\", \"Avenue\"]" error:nil];
+    XCTAssertTrue(valid, @"3.2");
+    
+    valid = [schema validateString:@"[1600, \"Pennsylvania\", \"Avenue\", \"NW\", \"Washington\"]" error:nil];
+    XCTAssertFalse(valid, @"3.3");
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{

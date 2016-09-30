@@ -438,92 +438,6 @@ static NSString *const JSONID = @"id";
 
 
 
-// Array
-
-@interface JSONArrayValidator : JSONValidator
-
-@property id items;
-@property BOOL additionalItems;
-@property NSNumber *minItems;
-@property NSNumber *maxItems;
-@property BOOL uniqueItems;
-
-@end
-
-
-
-@implementation JSONArrayValidator
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        self.additionalItems = YES;
-    }
-    return self;
-}
-
-- (BOOL)validate {
-    
-    // type
-    
-    if (![self.object isKindOfClass:[NSArray class]]) {
-        self.error = JSONType;
-        return NO;
-    }
-    
-    NSArray *array = self.object;
-    
-    // items
-    
-    // additionalItems
-    
-    // minItems
-    
-    if (self.minItems) {
-        if (array.count < self.minItems.unsignedIntegerValue) {
-            self.error = JSONMinItems;
-            return NO;
-        }
-    }
-    
-    // maxItems
-    
-    if (self.maxItems) {
-        if (array.count > self.maxItems.unsignedIntegerValue) {
-            self.error = JSONMaxItems;
-            return NO;
-        }
-    }
-    
-    // uniqueItems
-    
-    if (self.uniqueItems) {
-        NSSet *set = [NSSet setWithArray:array];
-        if (set.count < array.count) {
-            self.error = JSONUniqueItems;
-            return NO;
-        }
-    }
-    
-    return YES;
-}
-
-- (void)setError:(NSString *)error {
-    error = [NSString stringWithFormat:@"%@.%@", JSONArray, error];
-    [super setError:error];
-}
-
-@end
-
-
-
-
-
-
-
-
-
-
 // Object
 
 @interface JSONObjectValidator : JSONValidator
@@ -700,6 +614,129 @@ static NSString *const JSONID = @"id";
 
 
 
+// Array
+
+@interface JSONArrayValidator : JSONValidator
+
+@property id items;
+@property NSNumber *additionalItems;
+@property NSNumber *minItems;
+@property NSNumber *maxItems;
+@property NSNumber *uniqueItems;
+
+@end
+
+
+
+@implementation JSONArrayValidator
+
+- (BOOL)validate {
+    
+    // type
+    
+    if (![self.object isKindOfClass:[NSArray class]]) {
+        self.error = JSONType;
+        return NO;
+    }
+    
+    NSArray *array = self.object;
+    
+    // minItems
+    
+    if (self.minItems) {
+        if (array.count < self.minItems.unsignedIntegerValue) {
+            self.error = JSONMinItems;
+            return NO;
+        }
+    }
+    
+    // maxItems
+    
+    if (self.maxItems) {
+        if (array.count > self.maxItems.unsignedIntegerValue) {
+            self.error = JSONMaxItems;
+            return NO;
+        }
+    }
+    
+    // uniqueItems
+    
+    if (self.uniqueItems) {
+        NSSet *set = [NSSet setWithArray:array];
+        if (set.count < array.count) {
+            self.error = JSONUniqueItems;
+            return NO;
+        }
+    }
+    
+    // items
+    
+    if (self.items) {
+        if ([self.items isKindOfClass:[NSDictionary class]]) {
+            
+            NSDictionary *d = self.items;
+            JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
+            for (id o in array) {
+                BOOL valid = [s validateObject:o error:nil];
+                if (!valid) {
+                    self.error = JSONItems;
+                    return NO;
+                }
+            }
+            
+        } else if ([self.items isKindOfClass:[NSArray class]]) {
+            
+            NSArray *items = self.items;
+            
+            for (NSUInteger index = 0; index < array.count; index++) {
+                id o = array[index];
+                if (index < items.count) {
+                    NSDictionary *d = items[index];
+                    JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
+                    BOOL valid = [s validateObject:o error:nil];
+                    if (!valid) {
+                        self.error = JSONItems;
+                        return NO;
+                    }
+                }
+            }
+            
+            // additionalItems
+            
+            if (self.additionalItems) {
+                if (array.count > items.count) {
+                    self.error = JSONAdditionalItems;
+                    return NO;
+                }
+            }
+            
+        } else {
+            
+            self.error = JSONItems;
+            return NO;
+            
+        }
+    }
+    
+    return YES;
+}
+
+- (void)setError:(NSString *)error {
+    error = [NSString stringWithFormat:@"%@.%@", JSONArray, error];
+    [super setError:error];
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
 // Enum
 
 @interface JSONEnumValidator : JSONValidator
@@ -822,6 +859,14 @@ static NSString *const JSONID = @"id";
             objectValidator.dependencies = self.schema[JSONDependencies];
             objectValidator.patternProperties = self.schema[JSONPatternProperties];
             validator = objectValidator;
+        } else if ([type isEqualToString:JSONArray]) {
+            JSONArrayValidator *arrayValidator = [JSONArrayValidator new];
+            arrayValidator.items = self.schema[JSONItems];
+            arrayValidator.additionalItems = self.schema[JSONAdditionalItems];
+            arrayValidator.minItems = self.schema[JSONMinItems];
+            arrayValidator.maxItems = self.schema[JSONMaxItems];
+            arrayValidator.uniqueItems = self.schema[JSONUniqueItems];
+            validator = arrayValidator;
         }
     }
     

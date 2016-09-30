@@ -26,6 +26,9 @@
 		37EEF9101D9DD3A200AC52B6 /* Object-schemaDependencies.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF90F1D9DD3A200AC52B6 /* Object-schemaDependencies.json */; };
 		37EEF9141D9DD72F00AC52B6 /* Object-patternProperties1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9131D9DD72F00AC52B6 /* Object-patternProperties1.json */; };
 		37EEF9171D9E325C00AC52B6 /* Object-patternProperties2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9161D9E325C00AC52B6 /* Object-patternProperties2.json */; };
+		37EEF9191D9E55AA00AC52B6 /* Array-list.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9181D9E55AA00AC52B6 /* Array-list.json */; };
+		37EEF91B1D9E57D200AC52B6 /* Array-tuple1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF91A1D9E57D200AC52B6 /* Array-tuple1.json */; };
+		37EEF91F1D9E83B200AC52B6 /* Array-tuple2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF91E1D9E83B200AC52B6 /* Array-tuple2.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,9 @@
 		37EEF90F1D9DD3A200AC52B6 /* Object-schemaDependencies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Object-schemaDependencies.json"; sourceTree = "<group>"; };
 		37EEF9131D9DD72F00AC52B6 /* Object-patternProperties1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Object-patternProperties1.json"; sourceTree = "<group>"; };
 		37EEF9161D9E325C00AC52B6 /* Object-patternProperties2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Object-patternProperties2.json"; sourceTree = "<group>"; };
+		37EEF9181D9E55AA00AC52B6 /* Array-list.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-list.json"; sourceTree = "<group>"; };
+		37EEF91A1D9E57D200AC52B6 /* Array-tuple1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-tuple1.json"; sourceTree = "<group>"; };
+		37EEF91E1D9E83B200AC52B6 /* Array-tuple2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-tuple2.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +144,9 @@
 				37EEF90F1D9DD3A200AC52B6 /* Object-schemaDependencies.json */,
 				37EEF9131D9DD72F00AC52B6 /* Object-patternProperties1.json */,
 				37EEF9161D9E325C00AC52B6 /* Object-patternProperties2.json */,
+				37EEF9181D9E55AA00AC52B6 /* Array-list.json */,
+				37EEF91A1D9E57D200AC52B6 /* Array-tuple1.json */,
+				37EEF91E1D9E83B200AC52B6 /* Array-tuple2.json */,
 			);
 			path = Schemas;
 			sourceTree = "<group>";
@@ -252,10 +261,13 @@
 				37EEF9071D9D94DF00AC52B6 /* Object-required.json in Resources */,
 				37EEF8FF1D9D76FD00AC52B6 /* Number-range.json in Resources */,
 				37EEF9031D9D907200AC52B6 /* Object-additionalProperties1.json in Resources */,
+				37EEF91F1D9E83B200AC52B6 /* Array-tuple2.json in Resources */,
 				37EEF8FD1D9D70B400AC52B6 /* Number-multiple.json in Resources */,
 				37EEF8F81D9D4F9C00AC52B6 /* String-regexp.json in Resources */,
 				37EEF9141D9DD72F00AC52B6 /* Object-patternProperties1.json in Resources */,
 				37EEF9051D9D927200AC52B6 /* Object-additionalProperties2.json in Resources */,
+				37EEF91B1D9E57D200AC52B6 /* Array-tuple1.json in Resources */,
+				37EEF9191D9E55AA00AC52B6 /* Array-list.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
