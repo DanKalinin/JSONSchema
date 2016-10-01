@@ -37,7 +37,6 @@
 		37EEF9451D9F0DCC00AC52B6 /* Combination-anyOf.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */; };
 		37EEF9471D9F1CE200AC52B6 /* Combination-oneOf1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */; };
 		37EEF9491D9F1FE300AC52B6 /* Combination-oneOf2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */; };
-		37EEF94F1DA0317400AC52B6 /* draft-03.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF94A1DA0270D00AC52B6 /* draft-03.json */; };
 		37EEF9501DA0317700AC52B6 /* draft-04.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF94B1DA0270D00AC52B6 /* draft-04.json */; };
 /* End PBXBuildFile section */
 
@@ -92,7 +91,6 @@
 		37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-anyOf.json"; sourceTree = "<group>"; };
 		37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf1.json"; sourceTree = "<group>"; };
 		37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf2.json"; sourceTree = "<group>"; };
-		37EEF94A1DA0270D00AC52B6 /* draft-03.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "draft-03.json"; sourceTree = "<group>"; };
 		37EEF94B1DA0270D00AC52B6 /* draft-04.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "draft-04.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,7 +138,6 @@
 			children = (
 				37EEF8A11D9AD19700AC52B6 /* JSONSchema.h */,
 				37EEF8A21D9AD19700AC52B6 /* JSONSchema.m */,
-				37EEF94A1DA0270D00AC52B6 /* draft-03.json */,
 				37EEF94B1DA0270D00AC52B6 /* draft-04.json */,
 				37EEF89A1D9AD15800AC52B6 /* Info.plist */,
 			);
@@ -321,7 +318,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37EEF94F1DA0317400AC52B6 /* draft-03.json in Resources */,
 				37EEF9501DA0317700AC52B6 /* draft-04.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

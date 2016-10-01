@@ -1366,24 +1366,23 @@ static NSString *const JSONErrorTimeout = @"timeout";
     NSString *schema = self.schema[JSONSchemaKey];
     schema = schema ? schema : JSONSchemaDraftV4;
     
-    NSURL *URL;
+    if (![@[JSONSchemaDraftV4, JSONSchemaCurrent] containsObject:schema]) return nil;
+    
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *resource = JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent;
+    NSURL *URL = [bundle URLForResource:resource withExtension:@"json"];
+    NSData *draftV4Data = [NSData dataWithContentsOfURL:URL];
+    
     if ([schema isEqualToString:JSONSchemaCurrent]) {
-        URL = [NSURL URLWithString:schema];
-    } else if ([@[JSONSchemaDraftV3, JSONSchemaDraftV4] containsObject:schema]) {
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        schema = schema.stringByDeletingLastPathComponent.lastPathComponent;
-        URL = [bundle URLForResource:schema withExtension:@"json"];
-    } else {
-        return nil;
+        URL = [NSURL URLWithString:JSONSchemaCurrent];
+        NSData *currentData = [NSData dataWithContentsOfURL:URL];
+        if (![currentData isEqualToData:draftV4Data]) {
+            return nil;
+        }
     }
     
-    NSData *data = [NSData dataWithContentsOfURL:URL];
-    @try {
-        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        return dictionary;
-    } @catch (NSException *exception) {
-        return nil;
-    }
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:draftV4Data options:0 error:nil];
+    return dictionary;
 }
 
 - (NSString *)resolvedType {
