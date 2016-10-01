@@ -27,6 +27,37 @@
     [super tearDown];
 }
 
+- (void)testType {
+    
+    // Type - string
+    
+    JSONSchema *schema = [[JSONSchema alloc] initWithString:@"{ \"type\": \"number\" }"];
+    XCTAssertNotNil(schema, @"1.0");
+    
+    BOOL valid = [schema validateObject:@42 error:nil];
+    XCTAssertTrue(valid, @"1.1");
+    
+    valid = [schema validateObject:@42.0 error:nil];
+    XCTAssertTrue(valid, @"1.2");
+    
+    valid = [schema validateObject:@"42" error:nil];
+    XCTAssertFalse(valid, @"1.3");
+    
+    // Type - array
+    
+    schema = [[JSONSchema alloc] initWithString:@"{ \"type\": [\"number\", \"string\"] }"];
+    XCTAssertNotNil(schema, @"2.0");
+    
+    valid = [schema validateObject:@42 error:nil];
+    XCTAssertTrue(valid, @"2.1");
+    
+    valid = [schema validateObject:@"Life, the universe, and everything" error:nil];
+    XCTAssertTrue(valid, @"2.2");
+    
+    valid = [schema validateString:@"[\"Life\", \"the universe\", \"and everything\"]" error:nil];
+    XCTAssertFalse(valid, @"2.3");
+}
+
 - (void)testString {
     
     // String - length
@@ -499,6 +530,12 @@
     
     valid = [schema validateObject:@"I am a string" error:nil];
     XCTAssertFalse(valid, @"6.3");
+}
+
+- (void)testSchema {
+    
+    JSONSchema *schema = [[JSONSchema alloc] initWithString:@"{ \"$schema\": \"http://json-schema.org/schema#\" }"];
+    [schema validateData:nil error:nil];
 }
 
 #pragma mark - Helpers

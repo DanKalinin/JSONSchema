@@ -15,6 +15,8 @@ FOUNDATION_EXPORT const unsigned char JSONSchemaVersionString[];
 
 @interface JSONSchema : NSObject
 
+typedef void (^JSONSchemaHandler)(BOOL success, NSError *error);
+
 - (instancetype)initWithURL:(NSURL *)URL;
 - (instancetype)initWithString:(NSString *)string;
 - (instancetype)initWithData:(NSData *)data;
@@ -24,5 +26,25 @@ FOUNDATION_EXPORT const unsigned char JSONSchemaVersionString[];
 - (BOOL)validateString:(NSString *)string error:(NSError **)error;
 - (BOOL)validateData:(NSData *)data error:(NSError **)error;
 - (BOOL)validateObject:(id)object error:(NSError **)error;
+
++ (void)validateURL:(NSURL *)URL withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateURL:(NSURL *)URL withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateURL:(NSURL *)URL withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateURL:(NSURL *)URL withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
+
++ (void)validateString:(NSString *)string withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateString:(NSString *)string withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateString:(NSString *)string withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateString:(NSString *)string withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
+
++ (void)validateData:(NSData *)data withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateData:(NSData *)data withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateData:(NSData *)data withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateData:(NSData *)data withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
+
++ (void)validateObject:(id)object withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateObject:(id)object withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateObject:(id)object withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
++ (void)validateObject:(id)object withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
 
 @end
