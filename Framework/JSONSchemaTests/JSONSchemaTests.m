@@ -532,10 +532,16 @@
     XCTAssertFalse(valid, @"6.3");
 }
 
-- (void)testSchema {
+- (void)testAsync {
     
-    JSONSchema *schema = [[JSONSchema alloc] initWithString:@"{ \"$schema\": \"http://json-schema.org/schema#\" }"];
-    [schema validateData:nil error:nil];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"1.0"];
+    
+    NSURL *URL = [NSURL URLWithString:@"http://json-schema.org/schema#"];
+    [JSONSchema validateString:@"{ }" withSchemaURL:URL timeout:10.0 completion:^(BOOL valid, NSError *error) {
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:15.0 handler:nil];
 }
 
 #pragma mark - Helpers

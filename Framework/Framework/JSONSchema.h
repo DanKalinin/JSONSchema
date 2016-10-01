@@ -15,7 +15,7 @@ FOUNDATION_EXPORT const unsigned char JSONSchemaVersionString[];
 
 @interface JSONSchema : NSObject
 
-typedef void (^JSONSchemaHandler)(BOOL success, NSError *error);
+typedef void (^JSONSchemaHandler)(BOOL valid, NSError *error);
 
 - (instancetype)initWithURL:(NSURL *)URL;
 - (instancetype)initWithString:(NSString *)string;

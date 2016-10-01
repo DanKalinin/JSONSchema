@@ -12,6 +12,11 @@
 
 static NSString *const JSONType = @"type";
 
+static NSString *const JSONTypeURL = @"url";
+static NSString *const JSONTypeString = @"string";
+static NSString *const JSONTypeData = @"data";
+static NSString *const JSONTypeObject = @"object";
+
 // String
 
 static NSString *const JSONString = @"string";
@@ -106,6 +111,7 @@ static NSString *const JSONID = @"id";
 
 static NSString *const JSONErrorsTable = @"Errors";
 static NSString *const JSONErrorDomain = @"JSONErrorDomain";
+static NSString *const JSONErrorSchema = @"schema";
 static NSString *const JSONErrorData = @"data";
 static NSString *const JSONErrorNil = @"nil";
 static NSString *const JSONErrorTimeout = @"timeout";
@@ -1210,76 +1216,150 @@ static NSString *const JSONErrorTimeout = @"timeout";
 // URL
 
 + (void)validateURL:(NSURL *)URL withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:URL type:JSONTypeURL withSchema:schemaURL schemaType:JSONTypeURL timeout:timeout completion:completion];
 }
 
 + (void)validateURL:(NSURL *)URL withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:URL type:JSONTypeURL withSchema:schemaString schemaType:JSONTypeString timeout:timeout completion:completion];
 }
 
 + (void)validateURL:(NSURL *)URL withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:URL type:JSONTypeURL withSchema:schemaData schemaType:JSONTypeData timeout:timeout completion:completion];
 }
 
 + (void)validateURL:(NSURL *)URL withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:URL type:JSONTypeURL withSchema:schemaDictionary schemaType:JSONTypeObject timeout:timeout completion:completion];
 }
 
 // String
 
 + (void)validateString:(NSString *)string withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:string type:JSONTypeString withSchema:schemaURL schemaType:JSONTypeURL timeout:timeout completion:completion];
 }
 
 + (void)validateString:(NSString *)string withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:string type:JSONTypeString withSchema:schemaString schemaType:JSONTypeString timeout:timeout completion:completion];
 }
 
 + (void)validateString:(NSString *)string withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:string type:JSONTypeString withSchema:schemaData schemaType:JSONTypeData timeout:timeout completion:completion];
 }
 
 + (void)validateString:(NSString *)string withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:string type:JSONTypeString withSchema:schemaDictionary schemaType:JSONTypeObject timeout:timeout completion:completion];
 }
 
 // Data
 
 + (void)validateData:(NSData *)data withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:data type:JSONTypeData withSchema:schemaURL schemaType:JSONTypeURL timeout:timeout completion:completion];
 }
 
 + (void)validateData:(NSData *)data withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:data type:JSONTypeData withSchema:schemaString schemaType:JSONTypeString timeout:timeout completion:completion];
 }
 
 + (void)validateData:(NSData *)data withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:data type:JSONTypeData withSchema:schemaData schemaType:JSONTypeData timeout:timeout completion:completion];
 }
 
 + (void)validateData:(NSData *)data withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:data type:JSONTypeData withSchema:schemaDictionary schemaType:JSONTypeObject timeout:timeout completion:completion];
 }
 
 // Object
 
 + (void)validateObject:(id)object withSchemaURL:(NSURL *)schemaURL timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:object type:JSONTypeObject withSchema:schemaURL schemaType:JSONTypeURL timeout:timeout completion:completion];
 }
 
 + (void)validateObject:(id)object withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:object type:JSONTypeObject withSchema:schemaString schemaType:JSONTypeString timeout:timeout completion:completion];
 }
 
 + (void)validateObject:(id)object withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:object type:JSONTypeObject withSchema:schemaData schemaType:JSONTypeData timeout:timeout completion:completion];
 }
 
 + (void)validateObject:(id)object withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion {
-    
+    [self validate:object type:JSONTypeObject withSchema:schemaDictionary schemaType:JSONTypeObject timeout:timeout completion:completion];
 }
 
 #pragma mark - Helpers
+
++ (void)validate:(id)o type:(NSString *)ot withSchema:(id)s schemaType:(NSString *)st timeout:(NSTimeInterval)t completion:(JSONSchemaHandler)c {
+    
+    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+        
+        // Init schema
+        
+        JSONSchema *schema = nil;
+        
+        if ([st isEqualToString:JSONTypeURL]) {
+            schema = [[JSONSchema alloc] initWithURL:s];
+        } else if ([st isEqualToString:JSONTypeString]) {
+            schema = [[JSONSchema alloc] initWithString:s];
+        } else if ([st isEqualToString:JSONTypeData]) {
+            schema = [[JSONSchema alloc] initWithData:s];
+        } else if ([st isEqualToString:JSONTypeObject]) {
+            schema = [[JSONSchema alloc] initWithDictionary:s];
+        }
+        
+        if (!schema) {
+            NSError *error = [self errorWithDescription:JSONErrorSchema];
+            [self invokeHandler:c valid:NO error:error];
+            return;
+        }
+        
+        // Validate
+        
+        BOOL valid = NO;
+        NSError *error = nil;
+        
+        if ([ot isEqualToString:JSONTypeURL]) {
+            valid = [schema validateURL:o error:&error];
+        } else if ([ot isEqualToString:JSONTypeString]) {
+            valid = [schema validateString:o error:&error];
+        } else if ([ot isEqualToString:JSONTypeData]) {
+            valid = [schema validateData:o error:&error];
+        } else if ([ot isEqualToString:JSONTypeObject]) {
+            valid = [schema validateObject:o error:&error];
+        }
+        
+        [self invokeHandler:c valid:valid error:error];
+    }];
+    
+    NSOperationQueue *queue = [NSOperationQueue new];
+    [queue addOperation:operation];
+    
+    NSOperationQueue *currentQueue = [NSOperationQueue currentQueue];
+    currentQueue = currentQueue ? currentQueue : [NSOperationQueue mainQueue];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(t * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (operation.executing) {
+            [operation cancel];
+            
+            NSError *error = [self errorWithDescription:JSONErrorTimeout];
+            [currentQueue addOperationWithBlock:^{
+                [self invokeHandler:c valid:NO error:error];
+            }];
+        }
+    });
+}
+
++ (NSError *)errorWithDescription:(NSString *)description {
+    NSBundle *bundle = [NSBundle bundleForClass:self];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[NSLocalizedDescriptionKey] = [bundle localizedStringForKey:description value:description table:JSONErrorsTable];
+    NSError *error = [NSError errorWithDomain:JSONErrorDomain code:0 userInfo:userInfo];
+    return error;
+}
+
++ (void)invokeHandler:(JSONSchemaHandler)handler valid:(BOOL)valid error:(NSError *)error {
+    if (handler) {
+        handler(valid, error);
+    }
+}
 
 - (NSDictionary *)specificationSchema {
     
@@ -1326,28 +1406,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
 }
 
 - (NSError *)errorWithDescription:(NSString *)description {
-    return nil;
+    NSError *error = [self.class errorWithDescription:description];
+    return error;
 }
-
-//- (BOOL)validateObject:(id)object withValidator:(JSONValidator *)validator forKeys:(NSArray *)keys {
-//    
-//    validator.object = object;
-//    
-//    for (NSString *key in keys) {
-//        id value = self.schema[key];
-//        [validator setValue:value forKey:key];
-//    }
-//    
-//    BOOL valid = [validator validate];
-//    return valid;
-//}
-//
-//- (NSError *)errorWithDescription:(NSString *)description {
-//    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-//    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-//    userInfo[NSLocalizedDescriptionKey] = [bundle localizedStringForKey:description value:description table:JSONErrorsTable];
-//    NSError *error = [NSError errorWithDomain:JSONErrorDomain code:0 userInfo:userInfo];
-//    return error;
-//}
 
 @end
