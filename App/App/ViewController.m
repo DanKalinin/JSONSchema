@@ -22,12 +22,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"String" withExtension:@"json"];
-    JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
+//    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"String" withExtension:@"json"];
+//    JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
+//    
+//    NSError *error = nil;
+//    BOOL valid = [schema validateObject:@1 error:&error];
+//    NSLog(@"valid - %i", valid);
     
-    NSError *error = nil;
-    BOOL valid = [schema validateObject:@1 error:&error];
-    NSLog(@"valid - %i", valid);
+    [JSONSchema validateString:@"{ }" withSchemaURL:[NSURL URLWithString:@"http://json-schema.org/schema#"] timeout:5.0 completion:^(BOOL valid, NSError *error) {
+        NSLog(@"valid - %i", valid);
+        NSLog(@"error - %@", error);
+    }];
 }
 
 

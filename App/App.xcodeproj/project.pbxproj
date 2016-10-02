@@ -17,6 +17,8 @@
 		37EEF8CF1D9C8C0800AC52B6 /* JSONSchema.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF8CD1D9C8C0100AC52B6 /* JSONSchema.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37EEF8D51D9C8D8200AC52B6 /* String.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF8D41D9C8D8200AC52B6 /* String.json */; };
 		37EEF8D81D9C96C300AC52B6 /* Number.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF8D71D9C96C300AC52B6 /* Number.json */; };
+		37EEF95B1DA0EB8C00AC52B6 /* Helpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */; };
+		37EEF95C1DA0EB8C00AC52B6 /* Helpers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				37EEF95C1DA0EB8C00AC52B6 /* Helpers.framework in Embed Frameworks */,
 				37EEF8CF1D9C8C0800AC52B6 /* JSONSchema.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -71,6 +74,7 @@
 		37EEF8C81D9C8C0100AC52B6 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../Framework/Framework.xcodeproj; sourceTree = "<group>"; };
 		37EEF8D41D9C8D8200AC52B6 /* String.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = String.json; sourceTree = "<group>"; };
 		37EEF8D71D9C96C300AC52B6 /* Number.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Number.json; sourceTree = "<group>"; };
+		37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Helpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37EEF95B1DA0EB8C00AC52B6 /* Helpers.framework in Frameworks */,
 				37EEF8CE1D9C8C0800AC52B6 /* JSONSchema.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -88,6 +93,7 @@
 		37EEF8A51D9C8BF700AC52B6 = {
 			isa = PBXGroup;
 			children = (
+				37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */,
 				37EEF8C81D9C8C0100AC52B6 /* Framework.xcodeproj */,
 				37EEF8B01D9C8BF700AC52B6 /* App */,
 				37EEF8AF1D9C8BF700AC52B6 /* Products */,
@@ -178,6 +184,7 @@
 				TargetAttributes = {
 					37EEF8AD1D9C8BF700AC52B6 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = PAY4ERVB97;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -373,6 +380,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = PAY4ERVB97;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dk.JSONSchemaApp;
@@ -384,6 +392,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = PAY4ERVB97;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dk.JSONSchemaApp;

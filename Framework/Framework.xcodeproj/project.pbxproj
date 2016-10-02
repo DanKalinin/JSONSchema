@@ -38,6 +38,7 @@
 		37EEF9471D9F1CE200AC52B6 /* Combination-oneOf1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */; };
 		37EEF9491D9F1FE300AC52B6 /* Combination-oneOf2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */; };
 		37EEF9501DA0317700AC52B6 /* draft-04.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF94B1DA0270D00AC52B6 /* draft-04.json */; };
+		37EEF95E1DA0FB8100AC52B6 /* Structure-reuse.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,7 @@
 		37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf1.json"; sourceTree = "<group>"; };
 		37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf2.json"; sourceTree = "<group>"; };
 		37EEF94B1DA0270D00AC52B6 /* draft-04.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "draft-04.json"; sourceTree = "<group>"; };
+		37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Structure-reuse.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */,
 				37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */,
 				37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */,
+				37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */,
 			);
 			path = Schemas;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				37EEF9231D9E8E9F00AC52B6 /* Array-uniqueness.json in Resources */,
 				37EEF90C1D9DC80500AC52B6 /* Object-propertyDependencies1.json in Resources */,
 				37EEF9211D9E85E600AC52B6 /* Array-length.json in Resources */,
+				37EEF95E1DA0FB8100AC52B6 /* Structure-reuse.json in Resources */,
 				37EEF9101D9DD3A200AC52B6 /* Object-schemaDependencies.json in Resources */,
 				37EEF9251D9EDBC700AC52B6 /* Combination-allOf1.json in Resources */,
 				37EEF8F61D9D4F1D00AC52B6 /* String-length.json in Resources */,
