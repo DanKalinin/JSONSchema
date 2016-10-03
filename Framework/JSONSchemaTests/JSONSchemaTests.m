@@ -561,11 +561,23 @@
 
 - (void)testAsync {
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"1.0"];
+    // Async
     
-    NSURL *URL = [NSURL URLWithString:@"http://json-schema.org/schema#"];
-    [JSONSchema validateString:@"{ }" withSchemaURL:URL timeout:10.0 completion:^(BOOL valid, NSError *error) {
-        [expectation fulfill];
+    NSURL *schemaURL = [self URLForDocument:@"Async"];
+    XCTAssertNotNil(schemaURL, @"1.0");
+    
+    NSURL *documentURL = [self URLForDocument:@"Structure-extend-doc1"];
+    XCTestExpectation *expectation11 = [self expectationWithDescription:@"1.1"];
+    [JSONSchema validateURL:documentURL withSchemaURL:schemaURL timeout:10.0 completion:^(BOOL valid, NSError *error) {
+        XCTAssertFalse(valid, @"1.1");
+        [expectation11 fulfill];
+    }];
+    
+    documentURL = [self URLForDocument:@"Structure-extend-doc2"];
+    XCTestExpectation *expectation12 = [self expectationWithDescription:@"1.2"];
+    [JSONSchema validateURL:documentURL withSchemaURL:schemaURL timeout:10.0 completion:^(BOOL valid, NSError *error) {
+        XCTAssertTrue(valid, @"1.2");
+        [expectation12 fulfill];
     }];
     
     [self waitForExpectationsWithTimeout:15.0 handler:nil];

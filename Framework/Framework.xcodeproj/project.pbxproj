@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3765889F1DA27EC800D83582 /* Async.json in Resources */ = {isa = PBXBuildFile; fileRef = 3765889E1DA27EC800D83582 /* Async.json */; };
 		37EEF8A31D9AD19700AC52B6 /* JSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 37EEF8A11D9AD19700AC52B6 /* JSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37EEF8A41D9AD19700AC52B6 /* JSONSchema.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EEF8A21D9AD19700AC52B6 /* JSONSchema.m */; };
 		37EEF8EA1D9D4C9C00AC52B6 /* JSONSchemaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EEF8E91D9D4C9C00AC52B6 /* JSONSchemaTests.m */; };
@@ -63,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3765889E1DA27EC800D83582 /* Async.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Async.json; sourceTree = "<group>"; };
 		37EEF8961D9AD15800AC52B6 /* JSONSchema.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSONSchema.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EEF89A1D9AD15800AC52B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37EEF8A11D9AD19700AC52B6 /* JSONSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONSchema.h; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */,
 				37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */,
 				37EEF9651DA1A44700AC52B6 /* Structure-extend.json */,
+				3765889E1DA27EC800D83582 /* Async.json */,
 			);
 			path = Schemas;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				37EEF96A1DA1A49800AC52B6 /* Structure-extend-doc2.json in Resources */,
 				37EEF9621DA16AEC00AC52B6 /* Structure-reuse-doc.json in Resources */,
 				37EEF9251D9EDBC700AC52B6 /* Combination-allOf1.json in Resources */,
+				3765889F1DA27EC800D83582 /* Async.json in Resources */,
 				37EEF8F61D9D4F1D00AC52B6 /* String-length.json in Resources */,
 				37EEF9071D9D94DF00AC52B6 /* Object-required.json in Resources */,
 				37EEF8FF1D9D76FD00AC52B6 /* Number-range.json in Resources */,

@@ -129,11 +129,9 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 
 
-@interface JSONSchema ()
+@protocol JSONValidating <NSObject>
 
-@property NSDictionary *schema;
-@property NSDictionary *originalSchema;
-- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema path:(NSString *)path error:(NSError **)error;
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path;
 
 @end
 
@@ -150,14 +148,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 // Base
 
-@interface JSONValidator : NSObject
-
-@property NSDictionary *originalSchema;
-
-@property id object;
-@property NSString *error;
-@property NSString *path;
-- (BOOL)validate;
+@interface JSONValidator : NSObject <JSONValidating>
 
 @end
 
@@ -165,7 +156,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONValidator
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     return YES;
 }
 
@@ -183,6 +174,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 @interface JSONTypeValidator : JSONValidator
 
 @property NSString *type;
+- (NSString *)errorWithError:(NSString *)error;
 
 @end
 
@@ -190,9 +182,9 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONTypeValidator
 
-- (void)setError:(NSString *)error {
+- (NSString *)errorWithError:(NSString *)error {
     error = [NSString stringWithFormat:@"%@.%@", self.type, error];
-    [super setError:error];
+    return error;
 }
 
 @end
@@ -250,22 +242,22 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return self;
 }
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // type
     
-    if (![self.object isKindOfClass:[NSString class]]) {
-        self.error = JSONType;
+    if (![object isKindOfClass:[NSString class]]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
-    NSString *string = self.object;
+    NSString *string = object;
     
     // minLength
     
     if (self.minLength) {
         if (string.length < self.minLength.unsignedIntegerValue) {
-            self.error = JSONMinLength;
+            *error = [self errorWithError:JSONMinLength];
             return NO;
         }
     }
@@ -274,7 +266,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
     
     if (self.maxLength) {
         if (string.length > self.maxLength.unsignedIntegerValue) {
-            self.error = JSONMaxLength;
+            *error = [self errorWithError:JSONMaxLength];
             return NO;
         }
     }
@@ -282,16 +274,15 @@ static NSString *const JSONErrorTimeout = @"timeout";
     // pattern
     
     if (self.pattern) {
-        NSError *error = nil;
-        NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:self.pattern options:0 error:&error];
+        NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:self.pattern options:0 error:nil];
         if (!regexp) {
-            self.error = JSONPattern;
+            *error = [self errorWithError:JSONPattern];
             return NO;
         }
         
         NSUInteger matches = [regexp numberOfMatchesInString:string options:0 range:NSMakeRange(0, string.length)];
         if (matches == 0) {
-            self.error = JSONPattern;
+            *error = [self errorWithError:JSONPattern];
             return NO;
         }
     }
@@ -312,7 +303,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
         } else if ([self.format isEqualToString:JSONURI]) {
             
         } else {
-            self.error = JSONFormat;
+            *error = [self errorWithError:JSONFormat];
             return NO;
         }
     }
@@ -355,23 +346,23 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return self;
 }
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // type
     
-    if (![self.object isKindOfClass:[NSNumber class]]) {
-        self.error = JSONType;
+    if (![object isKindOfClass:[NSNumber class]]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
-    NSNumber *number = self.object;
+    NSNumber *number = object;
     
     // multipleOf
     
     if (self.multipleOf) {
         int remainder = number.intValue % self.multipleOf.intValue;
         if (remainder != 0) {
-            self.error = JSONMultipleOf;
+            *error = [self errorWithError:JSONMultipleOf];
             return NO;
         }
     }
@@ -383,14 +374,14 @@ static NSString *const JSONErrorTimeout = @"timeout";
         if (self.exclusiveMinimum) {
             if (self.exclusiveMinimum.boolValue) {
                 if (number.intValue <= self.minimum.intValue) {
-                    self.error = JSONExclusiveMinimum;
+                    *error = [self errorWithError:JSONExclusiveMinimum];
                     return NO;
                 }
             }
         }
         
         if (number.intValue < self.minimum.intValue) {
-            self.error = JSONMinimum;
+            *error = [self errorWithError:JSONMinimum];
             return NO;
         }
     }
@@ -402,14 +393,14 @@ static NSString *const JSONErrorTimeout = @"timeout";
         if (self.exclusiveMaximum) {
             if (self.exclusiveMaximum.boolValue) {
                 if (number.intValue >= self.maximum.intValue) {
-                    self.error = JSONExclusiveMaximum;
+                    *error = [self errorWithError:JSONExclusiveMaximum];
                     return NO;
                 }
             }
         }
         
         if (number.intValue > self.maximum.intValue) {
-            self.error = JSONMaximum;
+            *error = [self errorWithError:JSONMaximum];
             return NO;
         }
     }
@@ -454,30 +445,29 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return self;
 }
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // type
     
-    if (![self.object isKindOfClass:[NSDictionary class]]) {
-        self.error = JSONType;
+    if (![object isKindOfClass:[NSDictionary class]]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
-    NSDictionary *object = [self.object mutableCopy];
+    NSDictionary *dictionary = [object mutableCopy];
     NSMutableDictionary *properties = self.properties ? self.properties.mutableCopy : [NSMutableDictionary dictionary];
     NSMutableArray *required = self.required ? self.required.mutableCopy : [NSMutableArray array];
     
     // patternProperties
     
     for (NSString *patternProperty in self.patternProperties.allKeys) {
-        NSError *error = nil;
-        NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:patternProperty options:0 error:&error];
+        NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:patternProperty options:0 error:nil];
         if (!regexp) {
-            self.error = JSONPatternProperties;
+            *error = [self errorWithError:JSONPatternProperties];
             return NO;
         }
         
-        for (NSString *property in object.allKeys) {
+        for (NSString *property in dictionary.allKeys) {
             NSUInteger matches = [regexp numberOfMatchesInString:property options:0 range:NSMakeRange(0, property.length)];
             if (matches > 0) {
                 properties[property] = self.patternProperties[patternProperty];
@@ -489,7 +479,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
     // dependencies
     
     for (NSString *property in self.dependencies.allKeys) {
-        if ([object.allKeys containsObject:property]) {
+        if ([dictionary.allKeys containsObject:property]) {
             id dependencies = self.dependencies[property];
             if ([dependencies isKindOfClass:[NSArray class]]) {
                 
@@ -515,7 +505,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
                 
             } else {
                 
-                self.error = JSONDependencies;
+                *error = [self errorWithError:JSONDependencies];
                 return NO;
                 
             }
@@ -525,8 +515,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
     // required
     
     for (NSString *requiredProperty in required) {
-        if (![object.allKeys containsObject:requiredProperty]) {
-            self.error = JSONRequired;
+        if (![dictionary.allKeys containsObject:requiredProperty]) {
+            *error = [self errorWithError:JSONRequired];
             return NO;
         }
     }
@@ -534,8 +524,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
     // minProperties
     
     if (self.minProperties) {
-        if (object.count < self.minProperties.unsignedIntegerValue) {
-            self.error = JSONMinProperties;
+        if (dictionary.count < self.minProperties.unsignedIntegerValue) {
+            *error = [self errorWithError:JSONMinProperties];
             return NO;
         }
     }
@@ -543,8 +533,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
     // maxProperties
     
     if (self.maxProperties) {
-        if (object.count > self.maxProperties.unsignedIntegerValue) {
-            self.error = JSONMaxProperties;
+        if (dictionary.count > self.maxProperties.unsignedIntegerValue) {
+            *error = [self errorWithError:JSONMaxProperties];
             return NO;
         }
     }
@@ -555,9 +545,9 @@ static NSString *const JSONErrorTimeout = @"timeout";
         if ([self.additionalProperties isKindOfClass:[NSNumber class]]) {
             
             if (![self.additionalProperties boolValue]) {
-                for (NSString *property in object.allKeys) {
+                for (NSString *property in dictionary.allKeys) {
                     if (![properties.allKeys containsObject:property]) {
-                        self.error = JSONAdditionalProperties;
+                        *error = [self errorWithError:JSONAdditionalProperties];
                         return NO;
                     }
                 }
@@ -565,14 +555,14 @@ static NSString *const JSONErrorTimeout = @"timeout";
             
         } else if ([self.additionalProperties isKindOfClass:[NSDictionary class]]) {
             
-            for (NSString *property in object.allKeys) {
+            for (NSString *property in dictionary.allKeys) {
                 if (![properties.allKeys containsObject:property]) {
                     properties[property] = self.additionalProperties;
                 }
             }
             
         } else {
-            self.error = JSONAdditionalProperties;
+            *error = [self errorWithError:JSONAdditionalProperties];
             return NO;
         }
     }
@@ -581,14 +571,13 @@ static NSString *const JSONErrorTimeout = @"timeout";
     
     for (NSString *property in properties.allKeys) {
         NSDictionary *d = properties[property];
-        id o = object[property];
+        id o = dictionary[property];
         
         if (o) {
             JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
-            BOOL valid = [s validateObject:o originalSchema:self.originalSchema path:self.path error:nil];
+            BOOL valid = [(id)s validateObject:o originalSchema:originalSchema error:error path:path];
             if (!valid) {
-                self.error = JSONProperties;
-                self.path = [self.path stringByAppendingPathComponent:property];
+                *path = [*path stringByAppendingPathComponent:property];
                 return NO;
             }
         }
@@ -632,22 +621,22 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return self;
 }
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // type
     
-    if (![self.object isKindOfClass:[NSArray class]]) {
-        self.error = JSONType;
+    if (![object isKindOfClass:[NSArray class]]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
-    NSArray *array = self.object;
+    NSArray *array = object;
     
     // minItems
     
     if (self.minItems) {
         if (array.count < self.minItems.unsignedIntegerValue) {
-            self.error = JSONMinItems;
+            *error = [self errorWithError:JSONMinItems];
             return NO;
         }
     }
@@ -656,7 +645,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
     
     if (self.maxItems) {
         if (array.count > self.maxItems.unsignedIntegerValue) {
-            self.error = JSONMaxItems;
+            *error = [self errorWithError:JSONMaxItems];
             return NO;
         }
     }
@@ -667,7 +656,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
         if (self.uniqueItems.boolValue) {
             NSSet *set = [NSSet setWithArray:array];
             if (set.count < array.count) {
-                self.error = JSONUniqueItems;
+                *error = [self errorWithError:JSONUniqueItems];
                 return NO;
             }
         }
@@ -681,13 +670,11 @@ static NSString *const JSONErrorTimeout = @"timeout";
             NSDictionary *d = self.items;
             JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
             for (id o in array) {
-                BOOL valid = [s validateObject:o originalSchema:self.originalSchema path:self.path error:nil];
+                BOOL valid = [(id)s validateObject:o originalSchema:originalSchema error:error path:path];
                 if (!valid) {
-                    self.error = JSONItems;
-                    
                     NSUInteger i = [array indexOfObject:o];
                     NSString *is = [NSString stringWithFormat:@"%i", (int)i];
-                    self.path = [self.path stringByAppendingPathComponent:is];
+                    *path = [*path stringByAppendingPathComponent:is];
                     
                     return NO;
                 }
@@ -702,12 +689,10 @@ static NSString *const JSONErrorTimeout = @"timeout";
                 if (index < items.count) {
                     NSDictionary *d = items[index];
                     JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
-                    BOOL valid = [s validateObject:o originalSchema:self.originalSchema path:self.path error:nil];
+                    BOOL valid = [(id)s validateObject:o originalSchema:originalSchema error:error path:path];
                     if (!valid) {
-                        self.error = JSONItems;
-                        
                         NSString *is = [NSString stringWithFormat:@"%i", (int)index];
-                        self.path = [self.path stringByAppendingPathComponent:is];
+                        *path = [*path stringByAppendingPathComponent:is];
                         
                         return NO;
                     }
@@ -719,7 +704,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
             if (self.additionalItems) {
                 if (!self.additionalItems.boolValue) {
                     if (array.count > items.count) {
-                        self.error = JSONAdditionalItems;
+                        *error = [self errorWithError:JSONAdditionalItems];
                         return NO;
                     }
                 }
@@ -727,7 +712,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
             
         } else {
             
-            self.error = JSONItems;
+            *error = [self errorWithError:JSONItems];
             return NO;
             
         }
@@ -765,20 +750,20 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return self;
 }
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // type
     
-    if (![self.object isKindOfClass:[NSNumber class]]) {
-        self.error = JSONType;
+    if (![object isKindOfClass:[NSNumber class]]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
     // value
     
     NSArray *values = @[@0, @1];
-    if (![values containsObject:self.object]) {
-        self.error = JSONType;
+    if (![values containsObject:object]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
@@ -814,12 +799,12 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return self;
 }
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // type
     
-    if (self.object != nil && ![self.object isKindOfClass:[NSNull class]]) {
-        self.error = JSONType;
+    if (object != nil && ![object isKindOfClass:[NSNull class]]) {
+        *error = [self errorWithError:JSONType];
         return NO;
     }
     
@@ -849,10 +834,10 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONEnumValidator
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
-    if (![self.enumeration containsObject:self.object]) {
-        self.error = JSONEnum;
+    if (![self.enumeration containsObject:object]) {
+        *error = JSONEnum;
         return NO;
     }
     
@@ -880,13 +865,13 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONAllOfValidator
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     for (NSDictionary *subschema in self.subschemas) {
         JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:subschema];
-        BOOL valid = [schema validateObject:self.object originalSchema:self.originalSchema path:self.path error:nil];
+        BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
         if (!valid) {
-            self.error = JSONAllOf;
+            *error = JSONAllOf;
             return NO;
         }
     }
@@ -915,15 +900,15 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONAnyOfValidator
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     for (NSDictionary *subschema in self.subschemas) {
         JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:subschema];
-        BOOL valid = [schema validateObject:self.object originalSchema:self.originalSchema path:self.path error:nil];
+        BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
         if (valid) return YES;
     }
     
-    self.error = JSONAnyOf;
+    *error = JSONAnyOf;
     return NO;
 }
 
@@ -948,22 +933,22 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONOneOfValidator
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     int matches = 0;
     for (NSDictionary *subschema in self.subschemas) {
         JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:subschema];
-        BOOL valid = [schema validateObject:self.object originalSchema:self.originalSchema path:self.path error:nil];
+        BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
         matches += valid;
         if (matches > 1) {
-            self.error = JSONOneOf;
+            *error = JSONOneOf;
             return NO;
         }
     }
     
     if (matches == 1) return YES;
     
-    self.error = JSONOneOf;
+    *error = JSONOneOf;
     return NO;
 }
 
@@ -990,11 +975,11 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONNotValidator
 
-- (BOOL)validate {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:self.subschema];
-    BOOL valid = [schema validateObject:self.object originalSchema:self.originalSchema path:self.path error:nil];
+    BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
     if (valid) {
-        self.error = JSONNot;
+        *error = JSONNot;
         return NO;
     }
     
@@ -1013,6 +998,14 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 
 #pragma mark - Schema
+
+@interface JSONSchema () <JSONValidating>
+
+@property NSDictionary *schema;
+
+@end
+
+
 
 @implementation JSONSchema
 
@@ -1096,7 +1089,12 @@ static NSString *const JSONErrorTimeout = @"timeout";
 }
 
 - (BOOL)validateObject:(id)object error:(NSError **)error {
-    BOOL valid = [self validateObject:object originalSchema:self.schema path:JSONFragment error:error];
+    NSString *description = nil;
+    NSString *path = JSONFragment;
+    BOOL valid = [self validateObject:object originalSchema:self.schema error:&description path:&path];
+    if (!valid && error) {
+        *error = [self errorWithDescription:description atPath:path];
+    }
     return valid;
 }
 
@@ -1256,12 +1254,21 @@ static NSString *const JSONErrorTimeout = @"timeout";
     }
 }
 
-- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema path:(NSString *)path error:(NSError **)error {
+- (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     // $ref
     
-    self.originalSchema = originalSchema;
-    [self substituteReferences];
+    for (NSString *key in self.schema.allKeys) {
+        if ([key isEqualToString:JSONRefKey]) {
+            NSString *ref = self.schema[key];
+            NSURL *URL = [NSURL URLWithString:ref];
+            self.schema = originalSchema;
+            for (NSString *component in URL.fragment.pathComponents) {
+                if ([component isEqualToString:JSONRoot]) continue;
+                self.schema = self.schema[component];
+            }
+        }
+    }
     
     // type
     
@@ -1315,16 +1322,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
             }
             
             if (validator) {
-                validator.object = object;
-                validator.originalSchema = originalSchema;
-                validator.path = path;
-                BOOL valid = [validator validate];
-                if (!valid) {
-                    if (error) {
-                        *error = [self errorWithDescription:validator.error atPath:validator.path];
-                    }
-                    return NO;
-                }
+                BOOL valid = [validator validateObject:object originalSchema:originalSchema error:error path:path];
+                if (!valid) return NO;
             }
             
         } else if ([type isKindOfClass:[NSArray class]]) {
@@ -1338,11 +1337,14 @@ static NSString *const JSONErrorTimeout = @"timeout";
                 dictionary[JSONType] = type;
                 
                 JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:dictionary];
-                valid = [schema validateObject:object originalSchema:originalSchema path:path error:error];
+                valid = [schema validateObject:object originalSchema:originalSchema error:error path:path];
                 if (valid) break;
             }
             
-            if (!valid) return NO;
+            if (!valid) {
+                *error = JSONType;
+                return NO;
+            }
             
         }
     }
@@ -1353,16 +1355,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
     if (enumeration) {
         JSONEnumValidator *enumValidator = [JSONEnumValidator new];
         enumValidator.enumeration = self.schema[JSONEnum];
-        enumValidator.object = object;
-        enumValidator.originalSchema = originalSchema;
-        enumValidator.path = path;
-        BOOL valid = [enumValidator validate];
-        if (!valid) {
-            if (error) {
-                *error = [self errorWithDescription:enumValidator.error atPath:enumValidator.path];
-            }
-            return NO;
-        }
+        BOOL valid = [enumValidator validateObject:object originalSchema:originalSchema error:error path:path];
+        if (!valid) return NO;
     }
     
     // combinations
@@ -1393,33 +1387,11 @@ static NSString *const JSONErrorTimeout = @"timeout";
     }
     
     if (validator) {
-        validator.object = object;
-        validator.originalSchema = originalSchema;
-        validator.path = path;
-        BOOL valid = [validator validate];
-        if (!valid) {
-            if (error) {
-                *error = [self errorWithDescription:validator.error atPath:validator.path];
-            }
-            return NO;
-        }
+        BOOL valid = [validator validateObject:object originalSchema:originalSchema error:error path:path];
+        if (!valid) return NO;
     }
     
     return YES;
-}
-
-- (void)substituteReferences {
-    for (NSString *key in self.schema.allKeys) {
-        if ([key isEqualToString:JSONRefKey]) {
-            NSString *ref = self.schema[key];
-            NSURL *URL = [NSURL URLWithString:ref];
-            self.schema = self.originalSchema;
-            for (NSString *component in URL.fragment.pathComponents) {
-                if ([component isEqualToString:JSONRoot]) continue;
-                self.schema = self.schema[component];
-            }
-        }
-    }
 }
 
 - (NSString *)resolvedType {
