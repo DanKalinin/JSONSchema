@@ -8,6 +8,9 @@
 
 #import "JSONSchema.h"
 
+static NSString *const JSONExtension = @"json";
+static NSString *const JSONFragment = @"#";
+
 #pragma mark - Type-specific keywords
 
 static NSString *const JSONType = @"type";
@@ -128,6 +131,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 @interface JSONSchema ()
 
 @property NSDictionary *schema;
+@property NSDictionary *originalSchema;
 - (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema path:(NSString *)path error:(NSError **)error;
 
 @end
@@ -1037,8 +1041,30 @@ static NSString *const JSONErrorTimeout = @"timeout";
     self = [super init];
     if (self) {
         self.schema = dictionary;
-        NSDictionary *specification = [self specificationSchema];
-        if (!specification) return nil;
+        
+        NSString *schema = self.schema[JSONSchemaKey];
+        if (schema) {
+            
+            NSString *identifier = self.schema[JSONID];
+            BOOL isSpec = [identifier isEqualToString:schema];
+            if (!isSpec) {
+                
+                NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+                NSURL *URL = [bundle URLForResource:JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent withExtension:JSONExtension];
+                NSData *data = [NSData dataWithContentsOfURL:URL];
+                
+                if (![schema isEqualToString:JSONSchemaDraftV4]) {
+                    URL = [NSURL URLWithString:schema];
+                    NSData *d = [NSData dataWithContentsOfURL:URL];
+                    if (![d isEqualToData:data]) return nil;
+                }
+                
+                NSDictionary *specDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                JSONSchema *specSchema = [[JSONSchema alloc] initWithDictionary:specDict];
+                BOOL valid = [specSchema validateObject:self.schema error:nil];
+                if (!valid) return nil;
+            }
+        }
     }
     return self;
 }
@@ -1062,14 +1088,14 @@ static NSString *const JSONErrorTimeout = @"timeout";
         return valid;
     } @catch (NSException *exception) {
         if (error) {
-            *error = [self errorWithDescription:JSONErrorData atPath:@"#"];
+            *error = [self errorWithDescription:JSONErrorData atPath:JSONFragment];
         }
         return NO;
     }
 }
 
 - (BOOL)validateObject:(id)object error:(NSError **)error {
-    BOOL valid = [self validateObject:object originalSchema:self.schema path:@"#" error:error];
+    BOOL valid = [self validateObject:object originalSchema:self.schema path:JSONFragment error:error];
     return valid;
 }
 
@@ -1231,6 +1257,11 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 - (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema path:(NSString *)path error:(NSError **)error {
     
+    // $ref
+    
+    self.originalSchema = originalSchema;
+    [self substituteReferences];
+    
     // type
     
     JSONValidator *validator = nil;
@@ -1376,28 +1407,44 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return YES;
 }
 
-- (NSDictionary *)specificationSchema {
-    
-    NSString *schema = self.schema[JSONSchemaKey];
-    schema = schema ? schema : JSONSchemaDraftV4;
-    
-    if (![@[JSONSchemaDraftV4, JSONSchemaCurrent] containsObject:schema]) return nil;
-    
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *resource = JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent;
-    NSURL *URL = [bundle URLForResource:resource withExtension:@"json"];
-    NSData *draftV4Data = [NSData dataWithContentsOfURL:URL];
-    
-    if ([schema isEqualToString:JSONSchemaCurrent]) {
-        URL = [NSURL URLWithString:JSONSchemaCurrent];
-        NSData *currentData = [NSData dataWithContentsOfURL:URL];
-        if (![currentData isEqualToData:draftV4Data]) {
-            return nil;
+//- (NSDictionary *)specificationSchema {
+//    
+//    NSString *schema = self.schema[JSONSchemaKey];
+//    schema = schema ? schema : JSONSchemaDraftV4;
+//    
+//    if (![@[JSONSchemaDraftV4, JSONSchemaCurrent] containsObject:schema]) return nil;
+//    
+//    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+//    NSString *resource = JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent;
+//    NSURL *URL = [bundle URLForResource:resource withExtension:JSONExtension];
+//    NSData *draftV4Data = [NSData dataWithContentsOfURL:URL];
+//    
+//    if ([schema isEqualToString:JSONSchemaCurrent]) {
+//        URL = [NSURL URLWithString:JSONSchemaCurrent];
+//        NSData *currentData = [NSData dataWithContentsOfURL:URL];
+//        if (![currentData isEqualToData:draftV4Data]) {
+//            return nil;
+//        }
+//    }
+//    
+//    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:draftV4Data options:0 error:nil];
+//    return dictionary;
+//}
+
+- (void)substituteReferences {
+    for (NSString *key in self.schema.allKeys) {
+        if ([key isEqualToString:JSONRefKey]) {
+            NSString *path = self.schema[key];
+            if ([path hasPrefix:JSONFragment]) {
+                NSMutableArray *components = path.pathComponents.mutableCopy;
+                [components removeObjectAtIndex:0];
+                self.schema = self.originalSchema;
+                for (NSString *component in components) {
+                    self.schema = self.schema[component];
+                }
+            }
         }
     }
-    
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:draftV4Data options:0 error:nil];
-    return dictionary;
 }
 
 - (NSString *)resolvedType {

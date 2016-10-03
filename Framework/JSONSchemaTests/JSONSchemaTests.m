@@ -62,7 +62,7 @@
     
     // String - length
     
-    NSURL *URL = [self URLForSchema:@"String-length"];
+    NSURL *URL = [self URLForDocument:@"String-length"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"1.0");
     
@@ -80,7 +80,7 @@
     
     // String - regexp
     
-    URL = [self URLForSchema:@"String-regexp"];
+    URL = [self URLForDocument:@"String-regexp"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"2.0");
     
@@ -105,7 +105,7 @@
     
     // Number - multiple
     
-    NSURL *URL = [self URLForSchema:@"Number-multiple"];
+    NSURL *URL = [self URLForDocument:@"Number-multiple"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"1.0");
     
@@ -123,7 +123,7 @@
     
     // Number - range
     
-    URL = [self URLForSchema:@"Number-range"];
+    URL = [self URLForDocument:@"Number-range"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"2.0");
     
@@ -147,7 +147,7 @@
     
     // Object - properties
     
-    NSURL *URL = [self URLForSchema:@"Object-properties"];
+    NSURL *URL = [self URLForDocument:@"Object-properties"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"1.0");
     
@@ -168,7 +168,7 @@
     
     // Object - additionalProperties1
     
-    URL = [self URLForSchema:@"Object-additionalProperties1"];
+    URL = [self URLForDocument:@"Object-additionalProperties1"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"2.0");
     
@@ -180,7 +180,7 @@
     
     // Object - additionalProperties2
     
-    URL = [self URLForSchema:@"Object-additionalProperties2"];
+    URL = [self URLForDocument:@"Object-additionalProperties2"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"3.0");
     
@@ -195,7 +195,7 @@
     
     // Object - required
     
-    URL = [self URLForSchema:@"Object-required"];
+    URL = [self URLForDocument:@"Object-required"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"4.0");
     
@@ -210,7 +210,7 @@
     
     // Object - size
     
-    URL = [self URLForSchema:@"Object-size"];
+    URL = [self URLForDocument:@"Object-size"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"5.0");
     
@@ -231,7 +231,7 @@
     
     // Object - propertyDependencies1
     
-    URL = [self URLForSchema:@"Object-propertyDependencies1"];
+    URL = [self URLForDocument:@"Object-propertyDependencies1"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"6.0");
     
@@ -249,7 +249,7 @@
     
     // Object - propertyDependencies2
     
-    URL = [self URLForSchema:@"Object-propertyDependencies2"];
+    URL = [self URLForDocument:@"Object-propertyDependencies2"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"7.0");
     
@@ -261,7 +261,7 @@
     
     // Object - schemaDependencies
     
-    URL = [self URLForSchema:@"Object-schemaDependencies"];
+    URL = [self URLForDocument:@"Object-schemaDependencies"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"8.0");
     
@@ -276,7 +276,7 @@
     
     // Object - patternProperties1
     
-    URL = [self URLForSchema:@"Object-patternProperties1"];
+    URL = [self URLForDocument:@"Object-patternProperties1"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"9.0");
     
@@ -297,7 +297,7 @@
     
     // Object - patternProperties2
     
-    URL = [self URLForSchema:@"Object-patternProperties2"];
+    URL = [self URLForDocument:@"Object-patternProperties2"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"10.0");
     
@@ -315,7 +315,7 @@
     
     // Array - list
     
-    NSURL *URL = [self URLForSchema:@"Array-list"];
+    NSURL *URL = [self URLForDocument:@"Array-list"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"1.0");
     
@@ -330,7 +330,7 @@
     
     // Array - tuple 1
     
-    URL = [self URLForSchema:@"Array-tuple1"];
+    URL = [self URLForDocument:@"Array-tuple1"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"2.0");
     
@@ -351,7 +351,7 @@
     
     // Array - tuple 2
     
-    URL = [self URLForSchema:@"Array-tuple2"];
+    URL = [self URLForDocument:@"Array-tuple2"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"3.0");
     
@@ -366,7 +366,7 @@
     
     // Array - length
     
-    URL = [self URLForSchema:@"Array-length"];
+    URL = [self URLForDocument:@"Array-length"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"4.0");
     
@@ -387,7 +387,7 @@
     
     // Array - uniqueness
     
-    URL = [self URLForSchema:@"Array-uniqueness"];
+    URL = [self URLForDocument:@"Array-uniqueness"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"5.0");
     
@@ -441,7 +441,7 @@
     
     // Combination - allOf 1
     
-    NSURL *URL = [self URLForSchema:@"Combination-allOf1"];
+    NSURL *URL = [self URLForDocument:@"Combination-allOf1"];
     JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"1.0");
 
@@ -453,7 +453,7 @@
     
     // Combination - allOf 2
     
-    URL = [self URLForSchema:@"Combination-allOf2"];
+    URL = [self URLForDocument:@"Combination-allOf2"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"2.0");
     
@@ -465,7 +465,7 @@
     
     // Combination - anyOf
     
-    URL = [self URLForSchema:@"Combination-anyOf"];
+    URL = [self URLForDocument:@"Combination-anyOf"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"3.0");
     
@@ -483,7 +483,7 @@
     
     // Combination - oneOf 1
     
-    URL = [self URLForSchema:@"Combination-oneOf1"];
+    URL = [self URLForDocument:@"Combination-oneOf1"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"4.0");
     
@@ -501,7 +501,7 @@
     
     // Combination - oneOf 2
     
-    URL = [self URLForSchema:@"Combination-oneOf2"];
+    URL = [self URLForDocument:@"Combination-oneOf2"];
     schema = [[JSONSchema alloc] initWithURL:URL];
     XCTAssertNotNil(schema, @"5.0");
     
@@ -532,6 +532,33 @@
     XCTAssertFalse(valid, @"6.3");
 }
 
+- (void)testStructure {
+    
+    // Structure - reuse
+    
+    NSURL *schemaURL = [self URLForDocument:@"Structure-reuse"];
+    JSONSchema *schema = [[JSONSchema alloc] initWithURL:schemaURL];
+    XCTAssertNotNil(schema, @"1.0");
+    
+    NSURL *documentURL = [self URLForDocument:@"Structure-reuse-doc"];
+    BOOL valid = [schema validateURL:documentURL error:nil];
+    XCTAssertTrue(valid, @"1.1");
+    
+    // Structure - extend
+    
+    schemaURL = [self URLForDocument:@"Structure-extend"];
+    schema = [[JSONSchema alloc] initWithURL:schemaURL];
+    XCTAssertNotNil(schema, @"3.0");
+    
+    documentURL = [self URLForDocument:@"Structure-extend-doc1"];
+    valid = [schema validateURL:documentURL error:nil];
+    XCTAssertFalse(valid, @"3.1");
+    
+    documentURL = [self URLForDocument:@"Structure-extend-doc2"];
+    valid = [schema validateURL:documentURL error:nil];
+    XCTAssertTrue(valid, @"3.2");
+}
+
 - (void)testAsync {
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"1.0"];
@@ -546,7 +573,7 @@
 
 #pragma mark - Helpers
 
-- (NSURL *)URLForSchema:(NSString *)schema {
+- (NSURL *)URLForDocument:(NSString *)schema {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSURL *URL = [bundle URLForResource:schema withExtension:@"json"];
     return URL;

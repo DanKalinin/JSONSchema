@@ -39,6 +39,10 @@
 		37EEF9491D9F1FE300AC52B6 /* Combination-oneOf2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */; };
 		37EEF9501DA0317700AC52B6 /* draft-04.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF94B1DA0270D00AC52B6 /* draft-04.json */; };
 		37EEF95E1DA0FB8100AC52B6 /* Structure-reuse.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */; };
+		37EEF9621DA16AEC00AC52B6 /* Structure-reuse-doc.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9611DA16AEC00AC52B6 /* Structure-reuse-doc.json */; };
+		37EEF9661DA1A44700AC52B6 /* Structure-extend.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9651DA1A44700AC52B6 /* Structure-extend.json */; };
+		37EEF9681DA1A46E00AC52B6 /* Structure-extend-doc1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9671DA1A46E00AC52B6 /* Structure-extend-doc1.json */; };
+		37EEF96A1DA1A49800AC52B6 /* Structure-extend-doc2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9691DA1A49800AC52B6 /* Structure-extend-doc2.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +98,10 @@
 		37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf2.json"; sourceTree = "<group>"; };
 		37EEF94B1DA0270D00AC52B6 /* draft-04.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "draft-04.json"; sourceTree = "<group>"; };
 		37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Structure-reuse.json"; sourceTree = "<group>"; };
+		37EEF9611DA16AEC00AC52B6 /* Structure-reuse-doc.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Structure-reuse-doc.json"; sourceTree = "<group>"; };
+		37EEF9651DA1A44700AC52B6 /* Structure-extend.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Structure-extend.json"; sourceTree = "<group>"; };
+		37EEF9671DA1A46E00AC52B6 /* Structure-extend-doc1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Structure-extend-doc1.json"; sourceTree = "<group>"; };
+		37EEF9691DA1A49800AC52B6 /* Structure-extend-doc2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Structure-extend-doc2.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +160,7 @@
 				37EEF8E91D9D4C9C00AC52B6 /* JSONSchemaTests.m */,
 				37EEF8EB1D9D4C9C00AC52B6 /* Info.plist */,
 				37EEF8F41D9D4F1D00AC52B6 /* Schemas */,
+				37EEF9601DA169F500AC52B6 /* Documents */,
 			);
 			path = JSONSchemaTests;
 			sourceTree = "<group>";
@@ -185,6 +194,7 @@
 				37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */,
 				37EEF9481D9F1FE300AC52B6 /* Combination-oneOf2.json */,
 				37EEF95D1DA0FB8100AC52B6 /* Structure-reuse.json */,
+				37EEF9651DA1A44700AC52B6 /* Structure-extend.json */,
 			);
 			path = Schemas;
 			sourceTree = "<group>";
@@ -211,6 +221,16 @@
 				37EEF9311D9EF33100AC52B6 /* Helpers.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		37EEF9601DA169F500AC52B6 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				37EEF9611DA16AEC00AC52B6 /* Structure-reuse-doc.json */,
+				37EEF9671DA1A46E00AC52B6 /* Structure-extend-doc1.json */,
+				37EEF9691DA1A49800AC52B6 /* Structure-extend-doc2.json */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,6 +361,9 @@
 				37EEF9211D9E85E600AC52B6 /* Array-length.json in Resources */,
 				37EEF95E1DA0FB8100AC52B6 /* Structure-reuse.json in Resources */,
 				37EEF9101D9DD3A200AC52B6 /* Object-schemaDependencies.json in Resources */,
+				37EEF9661DA1A44700AC52B6 /* Structure-extend.json in Resources */,
+				37EEF96A1DA1A49800AC52B6 /* Structure-extend-doc2.json in Resources */,
+				37EEF9621DA16AEC00AC52B6 /* Structure-reuse-doc.json in Resources */,
 				37EEF9251D9EDBC700AC52B6 /* Combination-allOf1.json in Resources */,
 				37EEF8F61D9D4F1D00AC52B6 /* String-length.json in Resources */,
 				37EEF9071D9D94DF00AC52B6 /* Object-required.json in Resources */,
@@ -348,6 +371,7 @@
 				37EEF9031D9D907200AC52B6 /* Object-additionalProperties1.json in Resources */,
 				37EEF91F1D9E83B200AC52B6 /* Array-tuple2.json in Resources */,
 				37EEF8FD1D9D70B400AC52B6 /* Number-multiple.json in Resources */,
+				37EEF9681DA1A46E00AC52B6 /* Structure-extend-doc1.json in Resources */,
 				37EEF8F81D9D4F9C00AC52B6 /* String-regexp.json in Resources */,
 				37EEF9431D9F09F400AC52B6 /* Combination-allOf2.json in Resources */,
 				37EEF9141D9DD72F00AC52B6 /* Object-patternProperties1.json in Resources */,

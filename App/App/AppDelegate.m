@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSLog(@"%@", @"/a/b/0/c".pathComponents);
+    NSLog(@"%@", @"#".pathComponents);
     
     return YES;
 }
