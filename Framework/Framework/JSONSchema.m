@@ -10,6 +10,7 @@
 
 static NSString *const JSONExtension = @"json";
 static NSString *const JSONFragment = @"#";
+static NSString *const JSONRoot = @"/";
 
 #pragma mark - Type-specific keywords
 
@@ -1407,41 +1408,15 @@ static NSString *const JSONErrorTimeout = @"timeout";
     return YES;
 }
 
-//- (NSDictionary *)specificationSchema {
-//    
-//    NSString *schema = self.schema[JSONSchemaKey];
-//    schema = schema ? schema : JSONSchemaDraftV4;
-//    
-//    if (![@[JSONSchemaDraftV4, JSONSchemaCurrent] containsObject:schema]) return nil;
-//    
-//    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-//    NSString *resource = JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent;
-//    NSURL *URL = [bundle URLForResource:resource withExtension:JSONExtension];
-//    NSData *draftV4Data = [NSData dataWithContentsOfURL:URL];
-//    
-//    if ([schema isEqualToString:JSONSchemaCurrent]) {
-//        URL = [NSURL URLWithString:JSONSchemaCurrent];
-//        NSData *currentData = [NSData dataWithContentsOfURL:URL];
-//        if (![currentData isEqualToData:draftV4Data]) {
-//            return nil;
-//        }
-//    }
-//    
-//    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:draftV4Data options:0 error:nil];
-//    return dictionary;
-//}
-
 - (void)substituteReferences {
     for (NSString *key in self.schema.allKeys) {
         if ([key isEqualToString:JSONRefKey]) {
-            NSString *path = self.schema[key];
-            if ([path hasPrefix:JSONFragment]) {
-                NSMutableArray *components = path.pathComponents.mutableCopy;
-                [components removeObjectAtIndex:0];
-                self.schema = self.originalSchema;
-                for (NSString *component in components) {
-                    self.schema = self.schema[component];
-                }
+            NSString *ref = self.schema[key];
+            NSURL *URL = [NSURL URLWithString:ref];
+            self.schema = self.originalSchema;
+            for (NSString *component in URL.fragment.pathComponents) {
+                if ([component isEqualToString:JSONRoot]) continue;
+                self.schema = self.schema[component];
             }
         }
     }

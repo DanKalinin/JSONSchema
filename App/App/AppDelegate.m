@@ -18,7 +18,29 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSLog(@"%@", @"#".pathComponents);
+    NSString *s1 = @"#/a/b/c";
+    NSString *s2 = @"http://foo.bar/schemas/address.json#/address";
+    NSString *s3 = @"definitions.json#/address";
+    
+    NSURL *URL1 = [NSURL URLWithString:s1];
+    NSURL *URL2 = [NSURL URLWithString:s2];
+    NSURL *URL3 = [NSURL URLWithString:s3];
+    
+    NSLog(@"1 - %@", URL1.fragment.pathComponents);
+    NSLog(@"2 - %@", URL2.fragment.pathComponents);
+    NSLog(@"3 - %@", URL3.fragment.pathComponents);
+    
+    NSLog(@"1 - %@", URL1.path);
+    NSLog(@"2 - %@", URL2.path);
+    NSLog(@"3 - %@", URL3.path);
+    
+    NSLog(@"1 - %@", URL1.host);
+    NSLog(@"2 - %@", URL2.host);
+    NSLog(@"3 - %@", URL3.host);
+    
+    NSURL *baseURL = URL2.URLByDeletingLastPathComponent;
+    NSURL *URL = [NSURL URLWithString:s3 relativeToURL:baseURL];
+    NSLog(@"URL - %@", URL.absoluteURL);
     
     return YES;
 }
