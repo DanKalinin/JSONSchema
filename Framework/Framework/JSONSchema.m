@@ -1010,6 +1010,40 @@ static NSString *const JSONErrorTimeout = @"timeout";
 
 @implementation JSONSchema
 
+static NSMutableDictionary *_definitions = nil;
+
++ (BOOL)setDefinitionsURL:(NSURL *)URL forKey:(NSString *)key {
+    NSData *data = [NSData dataWithContentsOfURL:URL];
+    BOOL success = [self setDefinitionsData:data forKey:key];
+    return success;
+}
+
++ (BOOL)setDefinitionsString:(NSString *)string forKey:(NSString *)key {
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    BOOL success = [self setDefinitionsData:data forKey:key];
+    return success;
+}
+
++ (BOOL)setDefinitionsData:(NSData *)data forKey:(NSString *)key {
+    @try {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSAssert(dictionary, NSStringFromClass(self));
+        [self setDefinitionsDictionary:dictionary forKey:key];
+        return YES;
+    } @catch (NSException *exception) {
+        return NO;
+    }
+}
+
++ (void)setDefinitionsDictionary:(NSDictionary *)dictionary forKey:(NSString *)key {
+    @synchronized (_definitions) {
+        if (!_definitions) {
+            _definitions = [NSMutableDictionary dictionary];
+        }
+        _definitions[key] = dictionary;
+    }
+}
+
 - (instancetype)initWithURL:(NSURL *)URL {
     NSData *data = [NSData dataWithContentsOfURL:URL];
     self = [self initWithData:data];
@@ -1025,6 +1059,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 - (instancetype)initWithData:(NSData *)data {
     @try {
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSAssert(dictionary, NSStringFromClass([self class]));
         self = [self initWithDictionary:dictionary];
         return self;
     } @catch (NSException *exception) {
@@ -1035,12 +1070,11 @@ static NSString *const JSONErrorTimeout = @"timeout";
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
-        self.schema = dictionary;
         
-        NSString *schema = self.schema[JSONSchemaKey];
+        NSString *schema = dictionary[JSONSchemaKey];
         if (schema) {
             
-            NSString *identifier = self.schema[JSONID];
+            NSString *identifier = dictionary[JSONID];
             BOOL isSpec = [identifier isEqualToString:schema];
             if (!isSpec) {
                 
@@ -1056,10 +1090,18 @@ static NSString *const JSONErrorTimeout = @"timeout";
                 
                 NSDictionary *specDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 JSONSchema *specSchema = [[JSONSchema alloc] initWithDictionary:specDict];
-                BOOL valid = [specSchema validateObject:self.schema error:nil];
+                BOOL valid = [specSchema validateObject:dictionary error:nil];
                 if (!valid) return nil;
             }
         }
+        
+        if (_definitions.count) {
+            NSMutableDictionary *schema = dictionary.mutableCopy;
+            [schema addEntriesFromDictionary:_definitions];
+            dictionary = schema;
+        }
+        
+        self.schema = dictionary;
     }
     return self;
 }
@@ -1421,6 +1463,32 @@ static NSString *const JSONErrorTimeout = @"timeout";
     userInfo[NSFilePathErrorKey] = path;
     NSError *error = [NSError errorWithDomain:JSONErrorDomain code:0 userInfo:userInfo];
     return error;
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
+@implementation NSObject (JSONSchema)
+
++ (JSONSchema *)JSONSchemaNamed:(NSString *)name {
+    NSBundle *bundle = [NSBundle bundleForClass:self];
+    NSURL *URL = [bundle URLForResource:name withExtension:JSONExtension];
+    JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
+    NSAssert(schema, name);
+    return schema;
+}
+
+- (JSONSchema *)JSONSchemaNamed:(NSString *)name {
+    JSONSchema *schema = [self.class JSONSchemaNamed:name];
+    return schema;
 }
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3724D6E71DA7B1ED00479C5D /* Helpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724D6E61DA7B1ED00479C5D /* Helpers.framework */; };
+		3724D6E81DA7B1ED00479C5D /* Helpers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3724D6E61DA7B1ED00479C5D /* Helpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37EEF8B31D9C8BF700AC52B6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EEF8B21D9C8BF700AC52B6 /* main.m */; };
 		37EEF8B61D9C8BF700AC52B6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EEF8B51D9C8BF700AC52B6 /* AppDelegate.m */; };
 		37EEF8B91D9C8BF700AC52B6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EEF8B81D9C8BF700AC52B6 /* ViewController.m */; };
@@ -17,8 +19,6 @@
 		37EEF8CF1D9C8C0800AC52B6 /* JSONSchema.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF8CD1D9C8C0100AC52B6 /* JSONSchema.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37EEF8D51D9C8D8200AC52B6 /* String.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF8D41D9C8D8200AC52B6 /* String.json */; };
 		37EEF8D81D9C96C300AC52B6 /* Number.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF8D71D9C96C300AC52B6 /* Number.json */; };
-		37EEF95B1DA0EB8C00AC52B6 /* Helpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */; };
-		37EEF95C1DA0EB8C00AC52B6 /* Helpers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +52,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				37EEF95C1DA0EB8C00AC52B6 /* Helpers.framework in Embed Frameworks */,
+				3724D6E81DA7B1ED00479C5D /* Helpers.framework in Embed Frameworks */,
 				37EEF8CF1D9C8C0800AC52B6 /* JSONSchema.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -61,6 +61,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3724D6E61DA7B1ED00479C5D /* Helpers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Helpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EEF8AE1D9C8BF700AC52B6 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EEF8B21D9C8BF700AC52B6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		37EEF8B41D9C8BF700AC52B6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		37EEF8C81D9C8C0100AC52B6 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../Framework/Framework.xcodeproj; sourceTree = "<group>"; };
 		37EEF8D41D9C8D8200AC52B6 /* String.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = String.json; sourceTree = "<group>"; };
 		37EEF8D71D9C96C300AC52B6 /* Number.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Number.json; sourceTree = "<group>"; };
-		37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Helpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37EEF95B1DA0EB8C00AC52B6 /* Helpers.framework in Frameworks */,
+				3724D6E71DA7B1ED00479C5D /* Helpers.framework in Frameworks */,
 				37EEF8CE1D9C8C0800AC52B6 /* JSONSchema.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,7 +93,7 @@
 		37EEF8A51D9C8BF700AC52B6 = {
 			isa = PBXGroup;
 			children = (
-				37EEF95A1DA0EB8C00AC52B6 /* Helpers.framework */,
+				3724D6E61DA7B1ED00479C5D /* Helpers.framework */,
 				37EEF8C81D9C8C0100AC52B6 /* Framework.xcodeproj */,
 				37EEF8B01D9C8BF700AC52B6 /* App */,
 				37EEF8AF1D9C8BF700AC52B6 /* Products */,

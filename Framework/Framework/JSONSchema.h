@@ -15,9 +15,21 @@ extern NSString *const JSONExtension;
 
 
 
+
+
+
+
+
+
+
 @interface JSONSchema : NSObject
 
 typedef void (^JSONSchemaHandler)(BOOL valid, NSError *error);
+
++ (BOOL)setDefinitionsURL:(NSURL *)URL forKey:(NSString *)key;
++ (BOOL)setDefinitionsString:(NSString *)string forKey:(NSString *)key;
++ (BOOL)setDefinitionsData:(NSData *)data forKey:(NSString *)key;
++ (void)setDefinitionsDictionary:(NSDictionary *)dictionary forKey:(NSString *)key;
 
 - (instancetype)initWithURL:(NSURL *)URL;
 - (instancetype)initWithString:(NSString *)string;
@@ -48,5 +60,21 @@ typedef void (^JSONSchemaHandler)(BOOL valid, NSError *error);
 + (void)validateObject:(id)object withSchemaString:(NSString *)schemaString timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
 + (void)validateObject:(id)object withSchemaData:(NSString *)schemaData timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
 + (void)validateObject:(id)object withSchemaDictionary:(NSString *)schemaDictionary timeout:(NSTimeInterval)timeout completion:(JSONSchemaHandler)completion;
+
+@end
+
+
+
+
+
+
+
+
+
+
+@interface NSObject (JSONSchema)
+
++ (JSONSchema *)JSONSchemaNamed:(NSString *)name;
+- (JSONSchema *)JSONSchemaNamed:(NSString *)name;
 
 @end
