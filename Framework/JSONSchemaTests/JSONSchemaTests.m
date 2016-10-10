@@ -141,6 +141,17 @@
     
     valid = [schema validateObject:@100 error:nil];
     XCTAssertFalse(valid, @"2.5");
+    
+    // Integer
+    
+    schema = [[JSONSchema alloc] initWithString:@"{\"type\" : \"integer\"}"];
+    XCTAssertNotNil(schema, @"3.0");
+    
+    valid = [schema validateObject:@1.0 error:nil];
+    XCTAssertTrue(valid, @"3.1");
+    
+    valid = [schema validateObject:@1.2 error:nil];
+    XCTAssertFalse(valid, @"3.2");
 }
 
 - (void)testObject {

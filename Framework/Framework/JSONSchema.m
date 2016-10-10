@@ -361,8 +361,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
     // multipleOf
     
     if (self.multipleOf) {
-        int remainder = number.intValue % self.multipleOf.intValue;
-        if (remainder != 0) {
+        double n = number.doubleValue / self.multipleOf.doubleValue;
+        if (n != round(n)) {
             *error = [self errorWithError:JSONMultipleOf];
             return NO;
         }
@@ -1332,9 +1332,15 @@ static NSMutableDictionary *_definitions = nil;
                 stringValidator.pattern = self.schema[JSONPattern];
                 stringValidator.format = self.schema[JSONFormat];
                 validator = stringValidator;
-            } else if ([type isEqualToString:JSONNumber]) {
+            } else if ([@[JSONNumber, JSONInteger] containsObject:type]) {
+                
+                NSNumber *multipleOf = self.schema[JSONMultipleOf];
+                if ([type isEqualToString:JSONInteger]) {
+                    multipleOf = multipleOf ? @(multipleOf.intValue) : @1;
+                }
+                
                 JSONNumberValidator *numberValidator = [JSONNumberValidator new];
-                numberValidator.multipleOf = self.schema[JSONMultipleOf];
+                numberValidator.multipleOf = multipleOf;
                 numberValidator.minimum = self.schema[JSONMinimum];
                 numberValidator.maximum = self.schema[JSONMaximum];
                 numberValidator.exclusiveMinimum = self.schema[JSONExclusiveMinimum];
