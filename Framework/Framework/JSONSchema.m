@@ -1071,11 +1071,13 @@ static NSMutableDictionary *_definitions = nil;
     self = [super init];
     if (self) {
         
+        BOOL isSpec = NO;
+        
         NSString *schema = dictionary[JSONSchemaKey];
         if (schema) {
             
             NSString *identifier = dictionary[JSONID];
-            BOOL isSpec = [identifier isEqualToString:schema];
+            isSpec = [identifier isEqualToString:schema];
             if (!isSpec) {
                 
                 NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -1095,7 +1097,7 @@ static NSMutableDictionary *_definitions = nil;
             }
         }
         
-        if (_definitions.count) {
+        if (!isSpec && _definitions.count) {
             NSMutableDictionary *schema = dictionary.mutableCopy;
             [schema addEntriesFromDictionary:_definitions];
             dictionary = schema;
