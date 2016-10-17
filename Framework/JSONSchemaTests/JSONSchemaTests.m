@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <Helpers/Helpers.h>
 #import "JSONSchema.h"
 
 
@@ -597,8 +598,7 @@
 #pragma mark - Helpers
 
 - (NSURL *)URLForDocument:(NSString *)schema {
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSURL *URL = [bundle URLForResource:schema withExtension:@"json"];
+    NSURL *URL = [self.bundle URLForResource:schema withExtension:@"json"];
     return URL;
 }
 
