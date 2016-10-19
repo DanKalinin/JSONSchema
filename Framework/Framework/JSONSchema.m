@@ -9,8 +9,6 @@
 #import "JSONSchema.h"
 #import <Helpers/Helpers.h>
 
-NSString *const JSONExtension = @"json";
-
 static NSString *const JSONFragment = @"#";
 static NSString *const JSONRoot = @"/";
 
