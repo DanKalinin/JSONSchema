@@ -11,6 +11,8 @@
 FOUNDATION_EXPORT double JSONSchemaVersionNumber;
 FOUNDATION_EXPORT const unsigned char JSONSchemaVersionString[];
 
+extern NSString *const JSONErrorDomain;
+
 
 
 
