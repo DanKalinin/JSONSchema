@@ -34,6 +34,7 @@ static NSString *const JSONHostname = @"hostname";
 static NSString *const JSONIPv4 = @"ipv4";
 static NSString *const JSONIPv6 = @"ipv6";
 static NSString *const JSONURI = @"uri";
+static NSString *const JSONRegex = @"regex";
 
 // Number
 
@@ -303,6 +304,8 @@ static NSString *const JSONErrorTimeout = @"timeout";
             
         } else if ([self.format isEqualToString:JSONURI]) {
             
+        } else if ([self.format isEqualToString:JSONRegex]) {
+            
         } else {
             *error = [self errorWithError:JSONFormat];
             return NO;
@@ -472,7 +475,6 @@ static NSString *const JSONErrorTimeout = @"timeout";
             NSUInteger matches = [regexp numberOfMatchesInString:property options:0 range:NSMakeRange(0, property.length)];
             if (matches > 0) {
                 properties[property] = self.patternProperties[patternProperty];
-                break;
             };
         }
     }
