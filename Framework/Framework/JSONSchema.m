@@ -114,7 +114,7 @@ static NSString *const JSONID = @"id";
 
 #pragma mark - Errors
 
-NSString *const JSONErrorDomain = @"JSONErrorDomain";
+NSErrorDomain const JSONErrorDomain = @"JSONErrorDomain";
 
 static NSString *const JSONErrorsTable = @"Errors";
 static NSString *const JSONErrorSchema = @"schema";
