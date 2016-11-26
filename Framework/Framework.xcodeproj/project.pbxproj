@@ -93,7 +93,7 @@
 		37EEF9201D9E85E600AC52B6 /* Array-length.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-length.json"; sourceTree = "<group>"; };
 		37EEF9221D9E8E9F00AC52B6 /* Array-uniqueness.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Array-uniqueness.json"; sourceTree = "<group>"; };
 		37EEF9241D9EDBC700AC52B6 /* Combination-allOf1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-allOf1.json"; sourceTree = "<group>"; };
-		37EEF92C1D9EF33100AC52B6 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../../../../Helpers/Framework/Framework.xcodeproj; sourceTree = "<group>"; };
+		37EEF92C1D9EF33100AC52B6 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../../Helpers/Framework/Framework.xcodeproj; sourceTree = "<group>"; };
 		37EEF9421D9F09F400AC52B6 /* Combination-allOf2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-allOf2.json"; sourceTree = "<group>"; };
 		37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-anyOf.json"; sourceTree = "<group>"; };
 		37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Combination-oneOf1.json"; sourceTree = "<group>"; };
