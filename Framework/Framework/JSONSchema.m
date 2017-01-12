@@ -577,7 +577,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
         id o = dictionary[property];
         
         if (o) {
-            JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
+            JSONSchema *s = [JSONSchema.alloc initWithDictionary:d];
             BOOL valid = [(id)s validateObject:o originalSchema:originalSchema error:error path:path];
             if (!valid) {
                 *path = [*path stringByAppendingPathComponent:property];
@@ -671,7 +671,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
         if ([self.items isKindOfClass:[NSDictionary class]]) {
             
             NSDictionary *d = self.items;
-            JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
+            JSONSchema *s = [JSONSchema.alloc initWithDictionary:d];
             for (id o in array) {
                 BOOL valid = [(id)s validateObject:o originalSchema:originalSchema error:error path:path];
                 if (!valid) {
@@ -691,7 +691,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
                 id o = array[index];
                 if (index < items.count) {
                     NSDictionary *d = items[index];
-                    JSONSchema *s = [[JSONSchema alloc] initWithDictionary:d];
+                    JSONSchema *s = [JSONSchema.alloc initWithDictionary:d];
                     BOOL valid = [(id)s validateObject:o originalSchema:originalSchema error:error path:path];
                     if (!valid) {
                         NSString *is = [NSString stringWithFormat:@"%i", (int)index];
@@ -871,7 +871,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 - (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     for (NSDictionary *subschema in self.subschemas) {
-        JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:subschema];
+        JSONSchema *schema = [JSONSchema.alloc initWithDictionary:subschema];
         BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
         if (!valid) {
             *error = JSONAllOf;
@@ -906,7 +906,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 - (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
     
     for (NSDictionary *subschema in self.subschemas) {
-        JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:subschema];
+        JSONSchema *schema = [JSONSchema.alloc initWithDictionary:subschema];
         BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
         if (valid) return YES;
     }
@@ -940,7 +940,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
     
     int matches = 0;
     for (NSDictionary *subschema in self.subschemas) {
-        JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:subschema];
+        JSONSchema *schema = [JSONSchema.alloc initWithDictionary:subschema];
         BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
         matches += valid;
         if (matches > 1) {
@@ -979,7 +979,7 @@ static NSString *const JSONErrorTimeout = @"timeout";
 @implementation JSONNotValidator
 
 - (BOOL)validateObject:(id)object originalSchema:(NSDictionary *)originalSchema error:(NSString **)error path:(NSString **)path {
-    JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:self.subschema];
+    JSONSchema *schema = [JSONSchema.alloc initWithDictionary:self.subschema];
     BOOL valid = [(id)schema validateObject:object originalSchema:originalSchema error:error path:path];
     if (valid) {
         *error = JSONNot;
@@ -1092,7 +1092,7 @@ static NSMutableDictionary *_definitions = nil;
                 }
                 
                 NSDictionary *specDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                JSONSchema *specSchema = [[JSONSchema alloc] initWithDictionary:specDict];
+                JSONSchema *specSchema = [JSONSchema.alloc initWithDictionary:specDict];
                 BOOL valid = [specSchema validateObject:dictionary error:nil];
                 if (!valid) return nil;
             }
@@ -1231,13 +1231,13 @@ static NSMutableDictionary *_definitions = nil;
         JSONSchema *schema = nil;
         
         if ([st isEqualToString:JSONTypeURL]) {
-            schema = [[JSONSchema alloc] initWithURL:s];
+            schema = [JSONSchema.alloc initWithURL:s];
         } else if ([st isEqualToString:JSONTypeString]) {
-            schema = [[JSONSchema alloc] initWithString:s];
+            schema = [JSONSchema.alloc initWithString:s];
         } else if ([st isEqualToString:JSONTypeData]) {
-            schema = [[JSONSchema alloc] initWithData:s];
+            schema = [JSONSchema.alloc initWithData:s];
         } else if ([st isEqualToString:JSONTypeObject]) {
-            schema = [[JSONSchema alloc] initWithDictionary:s];
+            schema = [JSONSchema.alloc initWithDictionary:s];
         }
         
         if (operation.cancelled) return;
@@ -1387,7 +1387,7 @@ static NSMutableDictionary *_definitions = nil;
                 NSMutableDictionary *dictionary = self.schema.mutableCopy;
                 dictionary[JSONType] = type;
                 
-                JSONSchema *schema = [[JSONSchema alloc] initWithDictionary:dictionary];
+                JSONSchema *schema = [JSONSchema.alloc initWithDictionary:dictionary];
                 valid = [schema validateObject:object originalSchema:originalSchema error:error path:path];
                 if (valid) break;
             }
@@ -1487,7 +1487,7 @@ static NSMutableDictionary *_definitions = nil;
 
 + (JSONSchema *)JSONSchemaNamed:(NSString *)name {
     NSURL *URL = [self.bundle URLForResource:name withExtension:JSONExtension];
-    JSONSchema *schema = [[JSONSchema alloc] initWithURL:URL];
+    JSONSchema *schema = [JSONSchema.alloc initWithURL:URL];
     NSAssert(schema, name);
     return schema;
 }
