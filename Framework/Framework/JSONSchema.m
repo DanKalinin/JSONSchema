@@ -1082,7 +1082,7 @@ static NSMutableDictionary *_definitions = nil;
             isSpec = [identifier isEqualToString:schema];
             if (!isSpec) {
                 
-                NSURL *URL = [self.bundle URLForResource:JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent withExtension:JSONExtension];
+                NSURL *URL = [self.bundle URLForResource:JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent withExtension:ExtensionJSON];
                 NSData *data = [NSData dataWithContentsOfURL:URL];
                 
                 if (![schema isEqualToString:JSONSchemaDraftV4]) {
@@ -1486,7 +1486,7 @@ static NSMutableDictionary *_definitions = nil;
 @implementation NSObject (JSONSchema)
 
 + (JSONSchema *)JSONSchemaNamed:(NSString *)name {
-    NSURL *URL = [self.bundle URLForResource:name withExtension:JSONExtension];
+    NSURL *URL = [self.bundle URLForResource:name withExtension:ExtensionJSON];
     JSONSchema *schema = [JSONSchema.alloc initWithURL:URL];
     NSAssert(schema, name);
     return schema;
