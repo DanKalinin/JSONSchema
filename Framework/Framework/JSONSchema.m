@@ -7,7 +7,7 @@
 //
 
 #import "JSONSchema.h"
-#import <FoundationExt/FoundationExt.h>
+#import <Helpers/Helpers.h>
 
 static NSString *const JSONFragment = @"#";
 static NSString *const JSONRoot = @"/";
