@@ -33,7 +33,6 @@
 		37EEF9211D9E85E600AC52B6 /* Array-length.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9201D9E85E600AC52B6 /* Array-length.json */; };
 		37EEF9231D9E8E9F00AC52B6 /* Array-uniqueness.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9221D9E8E9F00AC52B6 /* Array-uniqueness.json */; };
 		37EEF9251D9EDBC700AC52B6 /* Combination-allOf1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9241D9EDBC700AC52B6 /* Combination-allOf1.json */; };
-		37EEF9321D9EF35400AC52B6 /* Helpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EEF9311D9EF33100AC52B6 /* Helpers.framework */; };
 		37EEF9431D9F09F400AC52B6 /* Combination-allOf2.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9421D9F09F400AC52B6 /* Combination-allOf2.json */; };
 		37EEF9451D9F0DCC00AC52B6 /* Combination-anyOf.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9441D9F0DCC00AC52B6 /* Combination-anyOf.json */; };
 		37EEF9471D9F1CE200AC52B6 /* Combination-oneOf1.json in Resources */ = {isa = PBXBuildFile; fileRef = 37EEF9461D9F1CE200AC52B6 /* Combination-oneOf1.json */; };
@@ -111,7 +110,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37EEF9321D9EF35400AC52B6 /* Helpers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
