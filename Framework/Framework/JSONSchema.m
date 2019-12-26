@@ -7,7 +7,10 @@
 //
 
 #import "JSONSchema.h"
-#import <Helpers/Helpers.h>
+
+#import <objc/runtime.h>
+
+static NSString *const JSONExtension = @"json";
 
 static NSString *const JSONFragment = @"#";
 static NSString *const JSONRoot = @"/";
@@ -1082,7 +1085,7 @@ static NSMutableDictionary *_definitions = nil;
             isSpec = [identifier isEqualToString:schema];
             if (!isSpec) {
                 
-                NSURL *URL = [self.bundle URLForResource:JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent withExtension:ExtensionJSON];
+                NSURL *URL = [[NSBundle bundleForClass:self.class] URLForResource:JSONSchemaDraftV4.stringByDeletingLastPathComponent.lastPathComponent withExtension:JSONExtension];
                 NSData *data = [NSData dataWithContentsOfURL:URL];
                 
                 if (![schema isEqualToString:JSONSchemaDraftV4]) {
@@ -1288,7 +1291,7 @@ static NSMutableDictionary *_definitions = nil;
 
 + (NSError *)errorWithDescription:(NSString *)description {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    userInfo[NSLocalizedDescriptionKey] = [self.bundle localizedStringForKey:description value:description table:JSONErrorsTable];
+    userInfo[NSLocalizedDescriptionKey] = [[NSBundle bundleForClass:self.class] localizedStringForKey:description value:description table:JSONErrorsTable];
     NSError *error = [NSError errorWithDomain:JSONErrorDomain code:0 userInfo:userInfo];
     return error;
 }
@@ -1466,7 +1469,7 @@ static NSMutableDictionary *_definitions = nil;
 
 - (NSError *)errorWithDescription:(NSString *)description atPath:(NSString *)path {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    userInfo[NSLocalizedDescriptionKey] = [self.bundle localizedStringForKey:description value:description table:JSONErrorsTable];
+    userInfo[NSLocalizedDescriptionKey] = [[NSBundle bundleForClass:self.class] localizedStringForKey:description value:description table:JSONErrorsTable];
     userInfo[NSFilePathErrorKey] = path;
     NSError *error = [NSError errorWithDomain:JSONErrorDomain code:0 userInfo:userInfo];
     return error;
@@ -1486,7 +1489,7 @@ static NSMutableDictionary *_definitions = nil;
 @implementation NSObject (JSONSchema)
 
 + (JSONSchema *)JSONSchemaNamed:(NSString *)name {
-    NSURL *URL = [self.bundle URLForResource:name withExtension:ExtensionJSON];
+    NSURL *URL = [[NSBundle bundleForClass:self.class] URLForResource:name withExtension:JSONExtension];
     JSONSchema *schema = [JSONSchema.alloc initWithURL:URL];
     NSAssert(schema, name);
     return schema;
